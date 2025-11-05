@@ -21,7 +21,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 // Configure RainbowKit with our custom chains
 const config = getDefaultConfig({
-  appName: 'StableCORE',
+  appName: 'StableYield',
   projectId: 'YOUR_PROJECT_ID',
   chains: chains,
   ssr: true,

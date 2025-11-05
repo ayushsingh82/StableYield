@@ -687,7 +687,7 @@ const SwapPage = () => {
             <div className="relative z-10">
               <h3 className="text-lg font-semibold text-[#FF8C00] mb-3">About cUSD</h3>
               <p className="text-gray-400 text-sm mb-4">
-                cUSD is the native stablecoin of the StableCORE ecosystem. It&apos;s used as the base asset for trading and lending.
+                cUSD is the native stablecoin of the StableYield ecosystem. It&apos;s used as the base asset for trading and lending.
               </p>
               <h3 className="text-lg font-semibold text-[#FF6347] mb-3">About stcUSD</h3>
               <p className="text-gray-400 text-sm">

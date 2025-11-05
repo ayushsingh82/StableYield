@@ -189,7 +189,7 @@ const StCOREMint = () => {
                 DeFi while earning staking rewards.
               </p>
               <p className="text-gray-300 mt-2">
-                stCOREs are used in the StableCORE protocol for restaking,
+                stCOREs are used in the StableYield protocol for restaking,
                 allowing operators to provide security to multiple networks
                 simultaneously.
               </p>

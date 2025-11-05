@@ -162,9 +162,7 @@ const USDCMint = () => {
 
   // Get current network name
   const getCurrentNetworkName = () => {
-    if (chainId === supportedChains.coreTestnet2.id) {
-      return "Core Testnet2";
-    } else if (chainId === supportedChains.hardhat.id) {
+    if (chainId === supportedChains.hardhat.id) {
       return "Hardhat";
     }
     return "Unknown Network";

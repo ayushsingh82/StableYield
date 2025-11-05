@@ -20,7 +20,7 @@ const Navbar = () => {
     <nav className="bg-black text-white p-8">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-xl font-bold text-[#FF8C00]">
-          <Link href="/">StableCORE</Link>
+          <Link href="/">StableYield</Link>
         </div>
 
         <div className="hidden md:flex space-x-8">
@@ -79,7 +79,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-2">
             <span className="text-sm text-gray-300">Network:</span>
             <div className="flex space-x-1">
-              {/* <button
+              <button
                 onClick={() => handleNetworkSwitch(supportedChains.hardhat.id)}
                 className={`px-2 py-1 text-xs rounded ${chainId === supportedChains.hardhat.id
                   ? "bg-[#FF8C00] text-black"
@@ -87,15 +87,6 @@ const Navbar = () => {
                   } transition-colors`}
               >
                 Hardhat
-              </button> */}
-              <button
-                onClick={() => handleNetworkSwitch(supportedChains.coreTestnet2.id)}
-                className={`px-2 py-1 text-xs rounded ${chainId === supportedChains.coreTestnet2.id
-                  ? "bg-[#FF8C00] text-black"
-                  : "bg-gray-700 text-white hover:bg-gray-600"
-                  } transition-colors`}
-              >
-                Core Testnet2
               </button>
             </div>
           </div>

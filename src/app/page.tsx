@@ -310,9 +310,7 @@ const HomePage = () => {
 
   // Get current network name
   const getCurrentNetworkName = () => {
-    if (chainId === supportedChains.coreTestnet2.id) {
-      return "Core Testnet2";
-    } else if (chainId === supportedChains.hardhat.id) {
+    if (chainId === supportedChains.hardhat.id) {
       return "Hardhat";
     }
     return "Unknown Network";
@@ -509,7 +507,7 @@ const HomePage = () => {
               fontFamily: "monospace",
             }}
           >
-            WHY CHOOSE STABLECORECORE
+            WHY CHOOSE StableYieldCORE
           </h2>
           <p className="text-lg text-gray-300 max-w-2xl">
             Earn yield safely while maintaining access to your funds.
@@ -586,7 +584,7 @@ const HomePage = () => {
             fontFamily: "monospace",
           }}
         >
-          STABLECORE TESTNET DEPLOYMENT ADDRESSES
+          StableYield TESTNET DEPLOYMENT ADDRESSES
         </h2>
         <div
           className="max-w-4xl mx-auto bg-black p-8 rounded-lg border border-gray-800"
@@ -636,7 +634,7 @@ const HomePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             {/* Company Info */}
             <div className="col-span-1 md:col-span-4">
-              <h3 className="text-2xl font-bold text-[#FF8C00] mb-4">StableCORE</h3>
+              <h3 className="text-2xl font-bold text-[#FF8C00] mb-4">StableYield</h3>
               <p className="text-white mb-4 font-medium">
                 The next generation stablecoin protocol with credible <br /> financial guarantees and institutional-grade security.
               </p>
