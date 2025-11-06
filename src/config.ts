@@ -1,6 +1,5 @@
 // Network configurations
 import { hardhat } from "viem/chains";
-import { createPublicClient, http } from "viem";
 
 // Custom hardhat configuration
 const hardhatConfig = {

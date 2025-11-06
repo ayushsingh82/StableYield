@@ -8,7 +8,7 @@ import wUSDCJson from "@/contracts/wUSDC.sol/wUSDC.json";
 import ContractAddresses from "../../deployed-address.json";
 import MintwUSDCButton from "../components/MintwUSDCButton";
 
-const stUSDCPage = () => {
+const StUSDCPage = () => {
   const [activeTab, setActiveTab] = useState("deposit");
   const [amount, setAmount] = useState("");
   const [USDCBalance, setUSDCBalance] = useState("0");
@@ -436,4 +436,4 @@ const stUSDCPage = () => {
   );
 };
 
-export default stUSDCPage;
+export default StUSDCPage;

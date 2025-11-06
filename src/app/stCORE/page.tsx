@@ -6,7 +6,7 @@ import { parseUnits, formatUnits } from "viem";
 import stTOKENJson from "@/contracts/stTOKEN.sol/stTOKEN.json";
 import ContractAddresses from "../../deployed-address.json";
 
-const stTOKENMint = () => {
+const StTOKENMint = () => {
   const [amount, setAmount] = useState("");
   const [balance, setBalance] = useState("0");
   const [loading, setLoading] = useState(false);
@@ -201,4 +201,4 @@ const stTOKENMint = () => {
   );
 };
 
-export default stTOKENMint;
+export default StTOKENMint;
