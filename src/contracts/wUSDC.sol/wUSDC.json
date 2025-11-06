@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "CUSD",
-  "sourceName": "contracts/CUSD.sol",
+  "contractName": "wUSDC",
+  "sourceName": "contracts/wUSDC.sol",
   "abi": [
     {
       "inputs": [
@@ -165,7 +165,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "CUSDAmount",
+          "name": "wUSDCAmount",
           "type": "uint256"
         }
       ],
@@ -184,7 +184,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "CUSDAmount",
+          "name": "wUSDCAmount",
           "type": "uint256"
         }
       ],
@@ -247,7 +247,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "CUSDAmount",
+          "name": "wUSDCAmount",
           "type": "uint256"
         },
         {
@@ -361,7 +361,7 @@
           "type": "address"
         }
       ],
-      "name": "getCUSDBalance",
+      "name": "getwUSDCBalance",
       "outputs": [
         {
           "internalType": "uint256",
@@ -416,7 +416,7 @@
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "CUSDBalance",
+          "name": "wUSDCBalance",
           "type": "uint256"
         },
         {
@@ -482,11 +482,11 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "CUSDAmount",
+          "name": "wUSDCAmount",
           "type": "uint256"
         }
       ],
-      "name": "mintCUSDAndTransferToSCUSD",
+      "name": "mintwUSDCAndTransferTostUSDC",
       "outputs": [
         {
           "internalType": "bool",
@@ -576,7 +576,7 @@
     },
     {
       "inputs": [],
-      "name": "sCUSDAddress",
+      "name": "stUSDCAddress",
       "outputs": [
         {
           "internalType": "address",
@@ -617,11 +617,11 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_sCUSD",
+          "name": "_stUSDC",
           "type": "address"
         }
       ],
-      "name": "setsCUSDAddress",
+      "name": "setstUSDCAddress",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -709,7 +709,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "CUSDAmount",
+          "name": "wUSDCAmount",
           "type": "uint256"
         },
         {
@@ -750,11 +750,11 @@
         },
         {
           "internalType": "uint256",
-          "name": "CUSDAmount",
+          "name": "wUSDCAmount",
           "type": "uint256"
         }
       ],
-      "name": "transferToSCUSD",
+      "name": "transferTostUSDC",
       "outputs": [
         {
           "internalType": "bool",
@@ -782,7 +782,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "CUSDAmount",
+          "name": "wUSDCAmount",
           "type": "uint256"
         }
       ],

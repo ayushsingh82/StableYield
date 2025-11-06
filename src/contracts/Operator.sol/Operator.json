@@ -10,10 +10,10 @@
     },
     {
       "inputs": [],
-      "name": "CUSDToken",
+      "name": "wUSDCToken",
       "outputs": [
         {
-          "internalType": "contract CUSD",
+          "internalType": "contract wUSDC",
           "name": "",
           "type": "address"
         }
@@ -156,11 +156,11 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_CUSDToken",
+          "name": "_wUSDCToken",
           "type": "address"
         }
       ],
-      "name": "setCUSD",
+      "name": "setwUSDC",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -204,7 +204,7 @@
           "type": "uint256"
         }
       ],
-      "name": "transferCUSD",
+      "name": "transferwUSDC",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

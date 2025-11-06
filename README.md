@@ -82,9 +82,9 @@ By leveraging Core’s hybrid consensus and Bitcoin-derived security guarantees,
 | Token/Contract   | Address |
 |------------------|---------|
 | **USDC**         | [0x3eCA9205a5A8b602067B2a58F60C30EA020FeCeb](https://scan.test2.btcs.network/address/0x3eCA9205a5A8b602067B2a58F60C30EA020FeCeb) |
-| **stCORE**       | [0x58f4BBC38d592F253fB98C53A4D2f55B8DBF51a7](https://scan.test2.btcs.network/address/0x58f4BBC38d592F253fB98C53A4D2f55B8DBF51a7) |
-| **CUSD**         | [0x71E00C10F924355453bCF8fe86F6B63980f859DD](https://scan.test2.btcs.network/address/0x71E00C10F924355453bCF8fe86F6B63980f859DD) |
-| **sCUSD**        | [0x5BC5C3A0F7ee4465DFCC1ad9526d9Bf107361AD1](https://scan.test2.btcs.network/address/0x5BC5C3A0F7ee4465DFCC1ad9526d9Bf107361AD1) |
+| **stTOKEN**       | [0x58f4BBC38d592F253fB98C53A4D2f55B8DBF51a7](https://scan.test2.btcs.network/address/0x58f4BBC38d592F253fB98C53A4D2f55B8DBF51a7) |
+| **wUSDC**         | [0x71E00C10F924355453bCF8fe86F6B63980f859DD](https://scan.test2.btcs.network/address/0x71E00C10F924355453bCF8fe86F6B63980f859DD) |
+| **stUSDC**        | [0x5BC5C3A0F7ee4465DFCC1ad9526d9Bf107361AD1](https://scan.test2.btcs.network/address/0x5BC5C3A0F7ee4465DFCC1ad9526d9Bf107361AD1) |
 | **Operator**     | [0x025f719646013A8b69b8568F105c67e60D14d8ab](https://scan.test2.btcs.network/address/0x025f719646013A8b69b8568F105c67e60D14d8ab) |
 | **Eigen**        | [0x6C2ba32a3ADBA2D61a02F5EAe3bd86F59B6a7B18](https://scan.test2.btcs.network/address/0x6C2ba32a3ADBA2D61a02F5EAe3bd86F59B6a7B18) |
 | **LoanManager**  | [0x0b3827aE16a73887F3C5c25d13CF5Ea4a2772c3C](https://scan.test2.btcs.network/address/0x0b3827aE16a73887F3C5c25d13CF5Ea4a2772c3C) |

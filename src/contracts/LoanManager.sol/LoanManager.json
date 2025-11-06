@@ -12,7 +12,7 @@
         },
         {
           "internalType": "address",
-          "name": "_sCUSDToken",
+          "name": "_stUSDCToken",
           "type": "address"
         },
         {
@@ -168,10 +168,10 @@
     },
     {
       "inputs": [],
-      "name": "CUSDToken",
+      "name": "wUSDCToken",
       "outputs": [
         {
-          "internalType": "contract CUSD",
+          "internalType": "contract wUSDC",
           "name": "",
           "type": "address"
         }
@@ -395,10 +395,10 @@
     },
     {
       "inputs": [],
-      "name": "sCUSDToken",
+      "name": "stUSDCToken",
       "outputs": [
         {
-          "internalType": "contract sCUSD",
+          "internalType": "contract stUSDC",
           "name": "",
           "type": "address"
         }
@@ -410,11 +410,11 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_CUSDToken",
+          "name": "_wUSDCToken",
           "type": "address"
         }
       ],
-      "name": "setCUSDToken",
+      "name": "setwUSDCToken",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

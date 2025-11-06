@@ -68,7 +68,7 @@ export default function CapAdminScreen() {
     }
   };
 
-  // Add this function to fetch the operator's delegated stCORE
+  // Add this function to fetch the operator's delegated stTOKEN
   const fetchOperatorDelegation = useCallback(async () => {
     if (!publicClient) return;
 
@@ -81,11 +81,11 @@ export default function CapAdminScreen() {
         args: [address],
       });
 
-      // Format the amount with 18 decimals (for stCORE)
+      // Format the amount with 18 decimals (for stTOKEN)
       setOperatorDelegation(formatUnits(delegatedData as bigint, 18));
     } catch (err) {
       console.error("Error fetching operator delegation:", err);
-      // If there's an error, we'll show 0 stCORE
+      // If there's an error, we'll show 0 stTOKEN
       setOperatorDelegation("0");
     }
   }, [publicClient, address]);
@@ -202,7 +202,7 @@ export default function CapAdminScreen() {
                           ContractAddresses.Operator.length - 4
                         )}
                       </td>
-                      <td className="py-4 pr-4">{operatorDelegation} stCORE</td>
+                      <td className="py-4 pr-4">{operatorDelegation} stTOKEN</td>
                       <td className="py-4 pr-4">
                         <span className="px-2 py-1 rounded text-xs bg-green-900 text-green-300">
                           Active
@@ -227,7 +227,7 @@ export default function CapAdminScreen() {
                       <td className="py-4 pr-4">#2</td>
                       <td className="py-4 pr-4">Colend</td>
                       <td className="py-4 pr-4">0x3Bc8...9F2a</td>
-                      <td className="py-4 pr-4">0 stCORE</td>
+                      <td className="py-4 pr-4">0 stTOKEN</td>
                       <td className="py-4 pr-4">
                         <span className="px-2 py-1 rounded text-xs bg-gray-800 text-gray-400">
                           Inactive
@@ -246,7 +246,7 @@ export default function CapAdminScreen() {
                       <td className="py-4 pr-4">#3</td>
                       <td className="py-4 pr-4">Sumer.Money</td>
                       <td className="py-4 pr-4">0x5Df1...4E3b</td>
-                      <td className="py-4 pr-4">0 stCORE</td>
+                      <td className="py-4 pr-4">0 stTOKEN</td>
                       <td className="py-4 pr-4">
                         <span className="px-2 py-1 rounded text-xs bg-gray-800 text-gray-400">
                           Inactive

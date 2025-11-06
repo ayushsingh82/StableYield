@@ -3,16 +3,16 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { usePublicClient, useWalletClient, useAccount, useChainId } from "wagmi";
 import { formatUnits, parseUnits } from "viem";
-import CUSDJson from "../../contracts/CUSD.sol/CUSD.json";
+import wUSDCJson from "../../contracts/wUSDC.sol/wUSDC.json";
 import { getContractAddress } from "../../config";
 
-interface OperatorCUSDBalanceProps {
+interface OperatorwUSDCBalanceProps {
     onBalanceUpdate?: (balance: string) => void;
     onMintSuccess?: () => void;
     onMintError?: (error: string) => void;
 }
 
-export default function OperatorCUSDBalance({ onBalanceUpdate, onMintSuccess, onMintError }: OperatorCUSDBalanceProps) {
+export default function OperatorwUSDCBalance({ onBalanceUpdate, onMintSuccess, onMintError }: OperatorwUSDCBalanceProps) {
     const [operatorBalance, setOperatorBalance] = useState("0");
     const [loading, setLoading] = useState(false);
     const [mintLoading, setMintLoading] = useState(false);
@@ -39,17 +39,17 @@ export default function OperatorCUSDBalance({ onBalanceUpdate, onMintSuccess, on
         setLoading(true);
         try {
             const operatorAddress = getContractAddress("Operator", chainId);
-            const cusdAddress = getContractAddress("CUSD", chainId);
+            const wUSDCAddress = getContractAddress("wUSDC", chainId);
 
             if (operatorAddress === '0x0000000000000000000000000000000000000000' ||
-                cusdAddress === '0x0000000000000000000000000000000000000000') {
+                wUSDCAddress === '0x0000000000000000000000000000000000000000') {
                 setLoading(false);
                 return;
             }
 
             const operatorBalanceData = await publicClient.readContract({
-                address: cusdAddress as `0x${string}`,
-                abi: CUSDJson.abi,
+                address: wUSDCAddress as `0x${string}`,
+                abi: wUSDCJson.abi,
                 functionName: "balanceOf",
                 args: [operatorAddress],
             });
@@ -64,7 +64,7 @@ export default function OperatorCUSDBalance({ onBalanceUpdate, onMintSuccess, on
         }
     }, [publicClient, chainId, onBalanceUpdate]);
 
-    // Handle minting cUSD to operator
+    // Handle minting wUSDC to operator
     const handleMintToOperator = async () => {
         if (!walletClient || !publicClient) {
             const errorMsg = "Wallet not connected properly";
@@ -75,29 +75,29 @@ export default function OperatorCUSDBalance({ onBalanceUpdate, onMintSuccess, on
 
         setMintLoading(true);
         try {
-            const cusdAddress = getContractAddress("CUSD", chainId);
+            const wUSDCAddress = getContractAddress("wUSDC", chainId);
 
-            if (cusdAddress === '0x0000000000000000000000000000000000000000') {
-                const errorMsg = "CUSD contract not available on current network";
+            if (wUSDCAddress === '0x0000000000000000000000000000000000000000') {
+                const errorMsg = "wUSDC contract not available on current network";
                 showNotification(errorMsg, "error");
                 onMintError?.(errorMsg);
                 setMintLoading(false);
                 return;
             }
 
-            // Mint 10 CUSD to operator
+            // Mint 10 wUSDC to operator
             const { request } = await publicClient.simulateContract({
-                address: cusdAddress as `0x${string}`,
-                abi: CUSDJson.abi,
+                address: wUSDCAddress as `0x${string}`,
+                abi: wUSDCJson.abi,
                 functionName: "mintToOperator",
-                args: [parseUnits("10", 18)], // Mint 10 CUSD to operator
+                args: [parseUnits("10", 18)], // Mint 10 wUSDC to operator
                 account: address,
             });
 
             const hash = await walletClient.writeContract(request);
             await publicClient.waitForTransactionReceipt({ hash });
 
-            const successMsg = "Successfully minted 10 CUSD to operator";
+            const successMsg = "Successfully minted 10 wUSDC to operator";
             showNotification(successMsg, "success");
             onMintSuccess?.();
 
@@ -120,7 +120,7 @@ export default function OperatorCUSDBalance({ onBalanceUpdate, onMintSuccess, on
     return (
         <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-white">Operator cUSD Balance</h3>
+                <h3 className="text-xl font-bold text-white">Operator wUSDC Balance</h3>
                 <button
                     onClick={fetchOperatorBalance}
                     disabled={loading}
@@ -145,10 +145,10 @@ export default function OperatorCUSDBalance({ onBalanceUpdate, onMintSuccess, on
 
             <div className="text-center mb-4">
                 <div className="text-3xl font-bold text-[#FF8C00] mb-2">
-                    {loading ? "Loading..." : `${parseFloat(operatorBalance).toFixed(2)} cUSD`}
+                    {loading ? "Loading..." : `${parseFloat(operatorBalance).toFixed(2)} wUSDC`}
                 </div>
                 <p className="text-gray-400 text-sm">
-                    Current operator balance in cUSD tokens
+                    Current operator balance in wUSDC tokens
                 </p>
             </div>
 
@@ -190,7 +190,7 @@ export default function OperatorCUSDBalance({ onBalanceUpdate, onMintSuccess, on
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                             />
                         </svg>
-                        <span>Mint 10 cUSD to Operator</span>
+                        <span>Mint 10 wUSDC to Operator</span>
                     </>
                 )}
             </button>

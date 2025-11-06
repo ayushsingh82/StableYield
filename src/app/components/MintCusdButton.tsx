@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt, useChainId } from 'wagmi';
 import { parseEther, formatEther } from 'viem';
 import { getContractAddress } from '@/config';
-import CUSD_ABI from '@/contracts/CUSD.sol/CUSD.json';
+import wUSDC_ABI from '@/contracts/wUSDC.sol/wUSDC.json';
 import USDC_ABI from '@/contracts/USDC/USDC.json';
 
 interface MintModalProps {
@@ -35,7 +35,7 @@ const MintModal: React.FC<MintModalProps> = ({
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style={{ zIndex: 999999, position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}>
             <div className="bg-black rounded-lg p-6 max-w-md w-full mx-4 backdrop-blur-sm" style={{ zIndex: 1000000, position: 'relative' }}>
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold text-white">Mint 10 cUSD</h2>
+                    <h2 className="text-xl font-bold text-white">Mint 10 wUSDC</h2>
                     <button
                         onClick={onClose}
                         className="text-gray-400 hover:text-white text-2xl transition-colors"
@@ -74,8 +74,8 @@ const MintModal: React.FC<MintModalProps> = ({
                     <div className={`p-4 rounded-lg border-2 ${step >= 2 ? 'border-[#FF8C00] bg-black bg-opacity-50' : 'border-gray-700 bg-black bg-opacity-30'}`}>
                         <div className="flex items-center justify-between">
                             <div>
-                                <h3 className="font-semibold text-white">Step 2: Mint 10 cUSD From USDC</h3>
-                                <p className="text-sm text-gray-300">Converting USDC to cUSD</p>
+                                <h3 className="font-semibold text-white">Step 2: Mint 10 wUSDC From USDC</h3>
+                                <p className="text-sm text-gray-300">Converting USDC to wUSDC</p>
                             </div>
                             <div className="flex items-center space-x-2">
                                 {step > 2 && (
@@ -130,12 +130,12 @@ const MintModal: React.FC<MintModalProps> = ({
     return createPortal(modalContent, document.body);
 };
 
-interface MintCusdButtonProps {
+interface MintwUSDCButtonProps {
     onMintComplete?: () => void;
     showBalance?: boolean;
 }
 
-const MintCusdButton: React.FC<MintCusdButtonProps> = ({ onMintComplete, showBalance = true }) => {
+const MintwUSDCButton: React.FC<MintwUSDCButtonProps> = ({ onMintComplete, showBalance = true }) => {
     const { address, isConnected } = useAccount();
     const chainId = useChainId();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -144,22 +144,22 @@ const MintCusdButton: React.FC<MintCusdButtonProps> = ({ onMintComplete, showBal
     const [step2Hash, setStep2Hash] = useState<string>();
 
     // Get contract addresses for current network
-    const getCUSDAddress = useCallback(() => {
-        return getContractAddress('CUSD', chainId);
+    const getwUSDCAddress = useCallback(() => {
+        return getContractAddress('wUSDC', chainId);
     }, [chainId]);
 
     const getUSDCAddress = useCallback(() => {
         return getContractAddress('USDC', chainId);
     }, [chainId]);
 
-    // Read cUSD balance with manual refetch capability
-    const { data: cusdBalance, refetch: refetchCusdBalance } = useReadContract({
-        address: getCUSDAddress() as `0x${string}`,
-        abi: CUSD_ABI.abi,
+    // Read wUSDC balance with manual refetch capability
+    const { data: wUSDCBalance, refetch: refetchwUSDCBalance } = useReadContract({
+        address: getwUSDCAddress() as `0x${string}`,
+        abi: wUSDC_ABI.abi,
         functionName: 'balanceOf',
         args: [address as `0x${string}`],
         query: {
-            enabled: !!address && !!getCUSDAddress() && getCUSDAddress() !== '0x0000000000000000000000000000000000000000',
+            enabled: !!address && !!getwUSDCAddress() && getwUSDCAddress() !== '0x0000000000000000000000000000000000000000',
             refetchInterval: 3000, // Refetch every 3 seconds
         },
     });
@@ -170,8 +170,8 @@ const MintCusdButton: React.FC<MintCusdButtonProps> = ({ onMintComplete, showBal
         hash: step1Data,
     });
 
-    // Step 2: Mint cUSD
-    const { writeContract: mintCusd, data: step2Data } = useWriteContract();
+    // Step 2: Mint wUSDC
+    const { writeContract: mintwUSDC, data: step2Data } = useWriteContract();
     const { isLoading: isStep2Loading } = useWaitForTransactionReceipt({
         hash: step2Data,
     });
@@ -182,10 +182,10 @@ const MintCusdButton: React.FC<MintCusdButtonProps> = ({ onMintComplete, showBal
             setStep1Hash(step1Data);
             setStep(2);
             setTimeout(() => {
-                refetchCusdBalance();
+                refetchwUSDCBalance();
             }, 1000);
         }
-    }, [step1Data, isStep1Loading, refetchCusdBalance]);
+    }, [step1Data, isStep1Loading, refetchwUSDCBalance]);
 
     // Handle step 2 completion
     useEffect(() => {
@@ -193,13 +193,13 @@ const MintCusdButton: React.FC<MintCusdButtonProps> = ({ onMintComplete, showBal
             setStep2Hash(step2Data);
             setStep(3);
             setTimeout(() => {
-                refetchCusdBalance();
+                refetchwUSDCBalance();
             }, 1000);
             if (onMintComplete) {
                 onMintComplete();
             }
         }
-    }, [step2Data, isStep2Loading, refetchCusdBalance, onMintComplete]);
+    }, [step2Data, isStep2Loading, refetchwUSDCBalance, onMintComplete]);
 
     const handleMint = async () => {
         if (!address) return;
@@ -228,21 +228,21 @@ const MintCusdButton: React.FC<MintCusdButtonProps> = ({ onMintComplete, showBal
 
     const handleStep2 = useCallback(async () => {
         if (!address || step !== 2) return;
-        const cusdAddress = getCUSDAddress();
-        if (!cusdAddress || cusdAddress === '0x0000000000000000000000000000000000000000') {
+        const wUSDCAddress = getwUSDCAddress();
+        if (!wUSDCAddress || wUSDCAddress === '0x0000000000000000000000000000000000000000') {
             return;
         }
         try {
-            await mintCusd({
-                address: cusdAddress as `0x${string}`,
-                abi: CUSD_ABI.abi,
+            await mintwUSDC({
+                address: wUSDCAddress as `0x${string}`,
+                abi: wUSDC_ABI.abi,
                 functionName: 'depositAndMint',
                 args: [parseEther('10')],
             });
         } catch {
             setStep(1);
         }
-    }, [address, step, getCUSDAddress, mintCusd]);
+    }, [address, step, getwUSDCAddress, mintwUSDC]);
 
     // Trigger step 2 when step 1 is complete
     useEffect(() => {
@@ -259,7 +259,7 @@ const MintCusdButton: React.FC<MintCusdButtonProps> = ({ onMintComplete, showBal
     if (!isConnected) {
         return (
             <div className="bg-black rounded-lg p-3 text-center backdrop-blur-sm">
-                <p className="text-gray-300 text-sm">Please connect your wallet to mint cUSD</p>
+                <p className="text-gray-300 text-sm">Please connect your wallet to mint wUSDC</p>
             </div>
         );
     }
@@ -270,7 +270,7 @@ const MintCusdButton: React.FC<MintCusdButtonProps> = ({ onMintComplete, showBal
                 onClick={() => setIsModalOpen(true)}
                 className="w-full bg-black border border-[#FF8C00] text-white py-2 px-4 rounded-lg hover:text-[#FF8C00] transition-colors font-semibold text-sm shadow-[0_0_15px_rgba(255,140,0,0.7)] hover:shadow-[0_0_20px_rgba(255,140,0,1)] cursor-pointer"
             >
-                Mint 10 cUSD{showBalance && ` • Balance: ${formatBalance(cusdBalance)} cUSD`}
+                Mint 10 wUSDC{showBalance && ` • Balance: ${formatBalance(wUSDCBalance)} wUSDC`}
             </button>
 
             <MintModal
@@ -282,7 +282,7 @@ const MintCusdButton: React.FC<MintCusdButtonProps> = ({ onMintComplete, showBal
                     setStep2Hash(undefined);
                     // Refetch balances when modal closes
                     setTimeout(() => {
-                        refetchCusdBalance();
+                        refetchwUSDCBalance();
                     }, 500);
                 }}
                 onMint={handleMint}
@@ -296,4 +296,4 @@ const MintCusdButton: React.FC<MintCusdButtonProps> = ({ onMintComplete, showBal
     );
 };
 
-export default MintCusdButton;
+export default MintwUSDCButton;

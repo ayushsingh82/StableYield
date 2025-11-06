@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useAccount, usePublicClient, useWalletClient } from "wagmi";
 import { parseUnits, formatUnits } from "viem";
-import stCOREJson from "@/contracts/stCORE.sol/stCORE.json";
+import stTOKENJson from "@/contracts/stTOKEN.sol/stTOKEN.json";
 import EigenJson from "@/contracts/Eigen.sol/Eigen.json";
 import ContractAddresses from "../../deployed-address.json";
 
@@ -12,7 +12,7 @@ const RestakingScreen = () => {
   const [balance, setBalance] = useState("0");
   const [amount, setAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [stCORELoading, setstCORELoading] = useState(false);
+  const [stTOKENLoading, setstTOKENLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("delegate");
   const [notification, setNotification] = useState({
     show: false,
@@ -25,14 +25,14 @@ const RestakingScreen = () => {
   const publicClient = usePublicClient();
   const { data: walletClient } = useWalletClient();
 
-  // Fetch stCORE balance
+  // Fetch stTOKEN balance
   const fetchBalance = useCallback(async () => {
     if (!address || !publicClient) return;
 
     try {
       const balanceData = await publicClient.readContract({
-        address: ContractAddresses.stCORE as `0x${string}`,
-        abi: stCOREJson.abi,
+        address: ContractAddresses.stTOKEN as `0x${string}`,
+        abi: stTOKENJson.abi,
         functionName: "balanceOf",
         args: [address],
       });
@@ -119,7 +119,7 @@ const RestakingScreen = () => {
       // Update balance
       fetchBalance();
 
-      showNotification(`Successfully delegated ${amount} stCORE`, "success");
+      showNotification(`Successfully delegated ${amount} stTOKEN`, "success");
       setAmount("");
     } catch (error: unknown) {
       console.error("Delegation error:", error);
@@ -132,24 +132,24 @@ const RestakingScreen = () => {
     }
   };
 
-  // Handle stCORE mint (fixed amount of 10 stCORE)
-  const handlestCOREMint = async () => {
+  // Handle stTOKEN mint (fixed amount of 10 stTOKEN)
+  const handlestTOKENMint = async () => {
     if (!walletClient || !publicClient) {
       showNotification("Wallet not connected properly", "error");
       return;
     }
 
-    setstCORELoading(true);
+    setstTOKENLoading(true);
     try {
-      // Convert 10 stCORE to units (18 decimals)
-      const stCOREAmountUnits = parseUnits("10", 18);
+      // Convert 10 stTOKEN to units (18 decimals)
+      const stTOKENAmountUnits = parseUnits("10", 18);
 
       // Prepare the mint transaction
       const { request } = await publicClient.simulateContract({
-        address: ContractAddresses.stCORE as `0x${string}`,
-        abi: stCOREJson.abi,
+        address: ContractAddresses.stTOKEN as `0x${string}`,
+        abi: stTOKENJson.abi,
         functionName: "mint",
-        args: [stCOREAmountUnits],
+        args: [stTOKENAmountUnits],
         account: address,
       });
 
@@ -161,15 +161,15 @@ const RestakingScreen = () => {
 
       // Update balance
       fetchBalance();
-      showNotification("Successfully minted 10 stCORE!", "success");
+      showNotification("Successfully minted 10 stTOKEN!", "success");
     } catch (error: unknown) {
-      console.error("Error minting stCORE:", error);
+      console.error("Error minting stTOKEN:", error);
       showNotification(
-        error instanceof Error ? error.message : "Failed to mint stCORE. Please try again.",
+        error instanceof Error ? error.message : "Failed to mint stTOKEN. Please try again.",
         "error"
       );
     } finally {
-      setstCORELoading(false);
+      setstTOKENLoading(false);
     }
   };
 
@@ -202,7 +202,7 @@ const RestakingScreen = () => {
       // Update balance
       fetchBalance();
 
-      showNotification(`Successfully undelegated ${amount} stCORE`, "success");
+      showNotification(`Successfully undelegated ${amount} stTOKEN`, "success");
       setAmount("");
     } catch (error: unknown) {
       console.error("Undelegation error:", error);
@@ -242,29 +242,29 @@ const RestakingScreen = () => {
           </div>
         )}
 
-        {/* stCORE Mint Button - Above Main Content */}
+        {/* stTOKEN Mint Button - Above Main Content */}
         <div className="mb-6">
           <div className="bg-black border border-gray-800 p-4 rounded-lg shadow-lg backdrop-blur-sm bg-[radial-gradient(#333_1px,transparent_1px)] bg-[size:10px_10px]">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-300 mb-1">
-                  Your stCORE Balance:{" "}
+                  Your stTOKEN Balance:{" "}
                   <span className="text-[#FF8C00] font-bold">
-                    {balance} stCORE
+                    {balance} stTOKEN
                   </span>
                 </p>
                 <p className="text-sm text-gray-400">
-                  Need stCORE to delegate? Get 10 stCORE for testing
+                  Need stTOKEN to delegate? Get 10 stTOKEN for testing
                 </p>
               </div>
 
               <button
-                onClick={handlestCOREMint}
-                disabled={stCORELoading}
-                className={`px-6 py-3 rounded-md text-white font-medium transition-colors ${stCORELoading ? "opacity-70" : ""
+                onClick={handlestTOKENMint}
+                disabled={stTOKENLoading}
+                className={`px-6 py-3 rounded-md text-white font-medium transition-colors ${stTOKENLoading ? "opacity-70" : ""
                   } bg-black border border-[#FF8C00] shadow-[0_0_15px_rgba(255,140,0,0.7)] hover:shadow-[0_0_20px_rgba(255,140,0,1)] hover:text-[#FF8C00]`}
               >
-                {stCORELoading ? "Processing..." : "Mint 10 stCORE"}
+                {stTOKENLoading ? "Processing..." : "Mint 10 stTOKEN"}
               </button>
             </div>
           </div>
@@ -297,13 +297,13 @@ const RestakingScreen = () => {
           {/* Balance Display */}
           <div className="mb-6 p-4 bg-gray-900 bg-opacity-50 rounded-lg">
             <div className="flex justify-between items-center mb-3">
-              <span className="text-gray-400">Your stCORE Balance</span>
-              <span className="text-xl font-semibold">{balance} stCORE</span>
+              <span className="text-gray-400">Your stTOKEN Balance</span>
+              <span className="text-xl font-semibold">{balance} stTOKEN</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-gray-400">Delegated stCORE</span>
+              <span className="text-gray-400">Delegated stTOKEN</span>
               <span className="text-xl font-semibold">
-                {delegatedAmount} stCORE
+                {delegatedAmount} stTOKEN
               </span>
             </div>
           </div>
@@ -363,7 +363,7 @@ const RestakingScreen = () => {
             protocols simultaneously.
           </p>
           <p className="text-gray-300">
-            When you delegate your stCORE tokens to an operator, they can use your
+            When you delegate your stTOKEN tokens to an operator, they can use your
             stake to validate transactions across different networks, increasing
             your potential rewards.
           </p>

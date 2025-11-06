@@ -6,9 +6,9 @@ import { useAccount, usePublicClient, useChainId } from "wagmi";
 import { parseUnits, formatUnits } from "viem";
 import StablecoinAnimation from "./components/StablecoinAnimation";
 import Image from "next/image";
-import CUSDJson from "@/contracts/CUSD.sol/CUSD.json";
-import sCUSDJson from "@/contracts/sCUSD.sol/sCUSD.json";
-import stCOREJson from "@/contracts/stCORE.sol/stCORE.json";
+import wUSDCJson from "@/contracts/wUSDC.sol/wUSDC.json";
+import stUSDCJson from "@/contracts/stUSDC.sol/stUSDC.json";
+import stTOKENJson from "@/contracts/stTOKEN.sol/stTOKEN.json";
 import EigenJson from "@/contracts/Eigen.sol/Eigen.json";
 import { getContractAddress, supportedChains } from "../config";
 import USDCJson from "@/contracts/USDC/USDC.json";
@@ -26,7 +26,7 @@ interface LoanContractResponse {
 
 const HomePage = () => {
   const [USDCBalance, setUSDCBalance] = useState("0");
-  const [CUSDBalance, setCUSDBalance] = useState("0");
+  const [wUSDCBalance, setwUSDCBalance] = useState("0");
   const [repayAmount, setRepayAmount] = useState("");
 
   const { address, isConnected } = useAccount();
@@ -35,9 +35,9 @@ const HomePage = () => {
 
   const devnetAddresses = {
     "USDC": "0x3eCA9205a5A8b602067B2a58F60C30EA020FeCeb",
-    "stCORE": "0x58f4BBC38d592F253fB98C53A4D2f55B8DBF51a7",
-    "CUSD": "0x71E00C10F924355453bCF8fe86F6B63980f859DD",
-    "sCUSD": "0x5BC5C3A0F7ee4465DFCC1ad9526d9Bf107361AD1",
+    "stTOKEN": "0x58f4BBC38d592F253fB98C53A4D2f55B8DBF51a7",
+    "wUSDC": "0x71E00C10F924355453bCF8fe86F6B63980f859DD",
+    "stUSDC": "0x5BC5C3A0F7ee4465DFCC1ad9526d9Bf107361AD1",
     "Operator": "0x025f719646013A8b69b8568F105c67e60D14d8ab",
     "Eigen": "0x6C2ba32a3ADBA2D61a02F5EAe3bd86F59B6a7B18",
     "LoanManager": "0x0b3827aE16a73887F3C5c25d13CF5Ea4a2772c3C"
@@ -54,7 +54,7 @@ const HomePage = () => {
 
       // Get contract addresses for current network
       const USDCAddress = getContractAddress("USDC", chainId);
-      const cusdAddress = getContractAddress("CUSD", chainId);
+      const wUSDCAddress = getContractAddress("wUSDC", chainId);
 
       console.log("USDC contract address:", USDCAddress);
 
@@ -75,54 +75,54 @@ const HomePage = () => {
         setUSDCBalance("0");
       }
 
-      // Fetch CUSD balance
-      if (cusdAddress !== '0x0000000000000000000000000000000000000000') {
-        const CUSDBalanceData = await publicClient.readContract({
-          address: cusdAddress as `0x${string}`,
-          abi: CUSDJson.abi,
+      // Fetch wUSDC balance
+      if (wUSDCAddress !== '0x0000000000000000000000000000000000000000') {
+        const wUSDCBalanceData = await publicClient.readContract({
+          address: wUSDCAddress as `0x${string}`,
+          abi: wUSDCJson.abi,
           functionName: "balanceOf",
           args: [address],
         });
 
-        console.log("Raw CUSD balance data:", CUSDBalanceData);
-        const formattedCUSDBalance = formatUnits(CUSDBalanceData as bigint, 18);
-        console.log("Formatted CUSD balance:", formattedCUSDBalance);
-        setCUSDBalance(formattedCUSDBalance);
+        console.log("Raw wUSDC balance data:", wUSDCBalanceData);
+        const formattedwUSDCBalance = formatUnits(wUSDCBalanceData as bigint, 18);
+        console.log("Formatted wUSDC balance:", formattedwUSDCBalance);
+        setwUSDCBalance(formattedwUSDCBalance);
       } else {
-        setCUSDBalance("0");
+        setwUSDCBalance("0");
       }
     } catch (err: unknown) {
       console.error("Error fetching balances:", err);
     }
   }, [address, publicClient, chainId]);
 
-  // sCUSD vault functions
-  const fetchSCUSDVaultData = useCallback(async () => {
+  // stUSDC vault functions
+  const fetchstUSDCVaultData = useCallback(async () => {
     if (!address || !publicClient) return;
 
     try {
       // Get contract addresses for current network
-      const cusdAddress = getContractAddress("CUSD", chainId);
-      const scusdAddress = getContractAddress("sCUSD", chainId);
+      const wUSDCAddress = getContractAddress("wUSDC", chainId);
+      const stUSDCAddress = getContractAddress("stUSDC", chainId);
 
-      if (cusdAddress === '0x0000000000000000000000000000000000000000' ||
-        scusdAddress === '0x0000000000000000000000000000000000000000') {
+      if (wUSDCAddress === '0x0000000000000000000000000000000000000000' ||
+        stUSDCAddress === '0x0000000000000000000000000000000000000000') {
         return;
       }
 
-      // Fetch sCUSD balance (shares)
+      // Fetch stUSDC balance (shares)
       const shareBalanceData = (await publicClient.readContract({
-        address: scusdAddress as `0x${string}`,
-        abi: sCUSDJson.abi,
+        address: stUSDCAddress as `0x${string}`,
+        abi: stUSDCJson.abi,
         functionName: "balanceOf",
         args: [address],
       })) as bigint;
 
-      // Convert shares to assets to get the user's vault balance in CUSD
+      // Convert shares to assets to get the user's vault balance in wUSDC
       if (shareBalanceData > BigInt(0)) {
         await publicClient.readContract({
-          address: scusdAddress as `0x${string}`,
-          abi: sCUSDJson.abi,
+          address: stUSDCAddress as `0x${string}`,
+          abi: stUSDCJson.abi,
           functionName: "convertToAssets",
           args: [shareBalanceData],
         });
@@ -130,14 +130,14 @@ const HomePage = () => {
 
       // Get total assets and shares to calculate conversion rate
       const totalAssets = (await publicClient.readContract({
-        address: scusdAddress as `0x${string}`,
-        abi: sCUSDJson.abi,
+        address: stUSDCAddress as `0x${string}`,
+        abi: stUSDCJson.abi,
         functionName: "totalAssets",
         args: [],
       })) as bigint;
       const totalShares = (await publicClient.readContract({
-        address: scusdAddress as `0x${string}`,
-        abi: sCUSDJson.abi,
+        address: stUSDCAddress as `0x${string}`,
+        abi: stUSDCJson.abi,
         functionName: "totalSupply",
         args: [],
       })) as bigint;
@@ -148,12 +148,12 @@ const HomePage = () => {
         console.log("Conversion rate:", conversionRate);
       }
 
-      // Preview shares for 10 CUSD deposit
+      // Preview shares for 10 wUSDC deposit
       try {
         const assets = parseUnits("10", 18);
         await publicClient.readContract({
-          address: scusdAddress as `0x${string}`,
-          abi: sCUSDJson.abi,
+          address: stUSDCAddress as `0x${string}`,
+          abi: stUSDCJson.abi,
           functionName: "previewDeposit",
           args: [assets],
         });
@@ -161,7 +161,7 @@ const HomePage = () => {
         console.error("Error calculating deposit preview:", err);
       }
     } catch (err) {
-      console.error("Error fetching sCUSD vault data:", err);
+      console.error("Error fetching stUSDC vault data:", err);
     }
   }, [address, publicClient, chainId]);
 
@@ -205,22 +205,22 @@ const HomePage = () => {
   };
 
   // Restaking functions
-  // Fetch stCORE balance and delegated amount
-  const fetchstCOREBalance = useCallback(async () => {
+  // Fetch stTOKEN balance and delegated amount
+  const fetchstTOKENBalance = useCallback(async () => {
     if (!address || !publicClient) return;
 
     try {
       // Get contract addresses for current network
-      const stcoreAddress = getContractAddress("stCORE", chainId);
+      const stTOKENAddress = getContractAddress("stTOKEN", chainId);
       const eigenAddress = getContractAddress("Eigen", chainId);
 
-      if (stcoreAddress === '0x0000000000000000000000000000000000000000') {
+      if (stTOKENAddress === '0x0000000000000000000000000000000000000000') {
         return;
       }
 
       await publicClient.readContract({
-        address: stcoreAddress as `0x${string}`,
-        abi: stCOREJson.abi,
+        address: stTOKENAddress as `0x${string}`,
+        abi: stTOKENJson.abi,
         functionName: "balanceOf",
         args: [address],
       });
@@ -239,7 +239,7 @@ const HomePage = () => {
         }
       }
     } catch (err) {
-      console.error("Error fetching stCORE balance:", err);
+      console.error("Error fetching stTOKEN balance:", err);
     }
   }, [address, publicClient, chainId]);
 
@@ -320,32 +320,32 @@ const HomePage = () => {
   useEffect(() => {
     if (isConnected && address && publicClient) {
       fetchBalances();
-      fetchSCUSDVaultData();
+      fetchstUSDCVaultData();
       fetchActiveLoans();
       fetchRepaymentAmount();
-      fetchstCOREBalance();
+      fetchstTOKENBalance();
 
       // Set up polling for balance updates
       const interval = setInterval(() => {
         fetchBalances();
-        fetchSCUSDVaultData();
+        fetchstUSDCVaultData();
         fetchActiveLoans();
         fetchRepaymentAmount();
-        fetchstCOREBalance();
+        fetchstTOKENBalance();
       }, 5000); // Poll every 5 seconds
 
       return () => clearInterval(interval);
     }
-  }, [address, isConnected, publicClient, chainId, fetchBalances, fetchSCUSDVaultData, fetchActiveLoans, fetchRepaymentAmount, fetchstCOREBalance]);
+  }, [address, isConnected, publicClient, chainId, fetchBalances, fetchstUSDCVaultData, fetchActiveLoans, fetchRepaymentAmount, fetchstTOKENBalance]);
 
   // Keep placeholder functions for future use (suppress ESLint warnings with void operator)
   const handleAmountChange = () => { void 0; /* Keep for future use */ };
   const handleUSDCMint = () => { void 0; /* Keep for future use */ };
   const handleMint = () => { void 0; /* Keep for future use */ };
-  const handleSCUSDDeposit = () => { void 0; /* Keep for future use */ };
-  const handleSCUSDWithdraw = () => { void 0; /* Keep for future use */ };
-  const handlestCOREAmountChange = () => { void 0; /* Keep for future use */ };
-  const handlestCOREMint = () => { void 0; /* Keep for future use */ };
+  const handlestUSDCDeposit = () => { void 0; /* Keep for future use */ };
+  const handlestUSDCWithdraw = () => { void 0; /* Keep for future use */ };
+  const handlestTOKENAmountChange = () => { void 0; /* Keep for future use */ };
+  const handlestTOKENMint = () => { void 0; /* Keep for future use */ };
   const handleDelegate = () => { void 0; /* Keep for future use */ };
   const handleUndelegate = () => { void 0; /* Keep for future use */ };
   const handleLoanAmountChange = () => { void 0; /* Keep for future use */ };
@@ -358,10 +358,10 @@ const HomePage = () => {
     handleAmountChange,
     handleUSDCMint,
     handleMint,
-    handleSCUSDDeposit,
-    handleSCUSDWithdraw,
-    handlestCOREAmountChange,
-    handlestCOREMint,
+    handlestUSDCDeposit,
+    handlestUSDCWithdraw,
+    handlestTOKENAmountChange,
+    handlestTOKENMint,
     handleDelegate,
     handleUndelegate,
     handleLoanAmountChange,
@@ -448,13 +448,13 @@ const HomePage = () => {
                 <li className="flex items-start">
                   <span className="text-[#FF8C00] mr-2">1.</span>
                   <span>
-                    Users deposit stCORE tokens as collateral into the protocol
+                    Users deposit stTOKEN tokens as collateral into the protocol
                   </span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-[#FF8C00] mr-2">2.</span>
                   <span>
-                    stCORE tokens are delegated to verified operators for restaking
+                    stTOKEN tokens are delegated to verified operators for restaking
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -474,13 +474,13 @@ const HomePage = () => {
                 <li className="flex items-start">
                   <span className="text-[#FF8C00] mr-2">4.</span>
                   <span>
-                    Users receive CUSD stablecoins against their collateral
+                    Users receive wUSDC stablecoins against their collateral
                   </span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-[#FF8C00] mr-2">5.</span>
                   <span>
-                    CUSD can be deposited into sCUSD vault for yield generation
+                    wUSDC can be deposited into stUSDC vault for yield generation
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -649,7 +649,7 @@ const HomePage = () => {
 
       {/* Debug info - shows current balances and repay amount */}
       <div style={{ display: 'none' }}>
-        USDC Balance: {USDCBalance}, CUSD Balance: {CUSDBalance}, Repay Amount: {repayAmount}
+        USDC Balance: {USDCBalance}, wUSDC Balance: {wUSDCBalance}, Repay Amount: {repayAmount}
       </div>
     </div>
   );

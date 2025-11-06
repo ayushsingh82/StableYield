@@ -3,13 +3,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useAccount, usePublicClient, useWalletClient, useChainId } from "wagmi";
 import { formatUnits } from "viem";
-import CUSDJson from "@/contracts/CUSD.sol/CUSD.json";
+import wUSDCJson from "@/contracts/wUSDC.sol/wUSDC.json";
 import LoanManagerJson from "@/contracts/LoanManager.sol/LoanManager.json";
 import ContractAddresses from "../../deployed-address.json";
 import EigenJson from "@/contracts/Eigen.sol/Eigen.json";
 
 import MintAndRestakeButton from "../components/MintAndRestake";
-import OperatorCUSDBalance from "../components/OperatorCUSDBalance";
+import OperatorwUSDCBalance from "../components/OperatorwUSDCBalance";
 import RepayLoanButton from "../components/RepayLoanButton";
 import TakeLoanButton from "../components/TakeLoanButton";
 import { getContractAddress } from "@/config";
@@ -51,7 +51,7 @@ export default function OperatorScreen() {
   const { data: walletClient } = useWalletClient();
   const chainId = useChainId();
 
-  // Fetch stCORE and USDC balances
+  // Fetch stTOKEN and USDC balances
   const fetchBalances = useCallback(async () => {
     if (!address || !publicClient) return;
 
@@ -138,8 +138,8 @@ export default function OperatorScreen() {
 
     try {
       await publicClient.readContract({
-        address: ContractAddresses.CUSD as `0x${string}`,
-        abi: CUSDJson.abi,
+        address: ContractAddresses.wUSDC as `0x${string}`,
+        abi: wUSDCJson.abi,
         functionName: "balanceOf",
         args: [ContractAddresses.Operator],
       });
@@ -370,8 +370,8 @@ export default function OperatorScreen() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Current Status */}
                 <div className="space-y-4">
-                  {/* Operator CUSD Balance Component */}
-                  <OperatorCUSDBalance
+                  {/* Operator wUSDC Balance Component */}
+                  <OperatorwUSDCBalance
                     onBalanceUpdate={() => {}}
                     onMintSuccess={() => {
                       fetchBalances();
@@ -386,16 +386,16 @@ export default function OperatorScreen() {
                     <h3 className="text-lg font-semibold mb-3 text-white">Current Status</h3>
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Your Delegated stCORE:</span>
+                        <span className="text-gray-400">Your Delegated stTOKEN:</span>
                         <span className="text-[#FF8C00] font-medium">
-                          {delegatedAmountLoading ? "Loading..." : `${delegatedAmount} stCORE`}
+                          {delegatedAmountLoading ? "Loading..." : `${delegatedAmount} stTOKEN`}
                         </span>
                       </div>
                       {loanDetails && !loanDetails.isRepaid && parseFloat(loanDetails.amount) > 0 && (
                         <>
                           <div className="flex justify-between">
                             <span className="text-gray-400">Active Loan Amount:</span>
-                            <span className="text-red-400 font-medium">{loanDetails.amount} cUSD</span>
+                            <span className="text-red-400 font-medium">{loanDetails.amount} wUSDC</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-400">Interest Rate:</span>
@@ -403,7 +403,7 @@ export default function OperatorScreen() {
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-400">Repayment Amount:</span>
-                            <span className="text-red-400 font-medium">{formatRepaymentAmount(repayAmount)} cUSD</span>
+                            <span className="text-red-400 font-medium">{formatRepaymentAmount(repayAmount)} wUSDC</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-400">Due Date:</span>
@@ -416,11 +416,11 @@ export default function OperatorScreen() {
                     </div>
         </div>
         
-                  {/* Required Delegation for 10 cUSD Loan */}
+                  {/* Required Delegation for 10 wUSDC Loan */}
                   <div className="bg-gray-900 bg-opacity-50 p-4 rounded-lg">
-                    <h3 className="text-lg font-semibold mb-3 text-white">Required for 10 cUSD Loan</h3>
+                    <h3 className="text-lg font-semibold mb-3 text-white">Required for 10 wUSDC Loan</h3>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-[#FF8C00]">15 stCORE</div>
+                      <div className="text-2xl font-bold text-[#FF8C00]">15 stTOKEN</div>
                       <p className="text-gray-400 text-sm">150% collateral ratio</p>
                     </div>
                   </div>

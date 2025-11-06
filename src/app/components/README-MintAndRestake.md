@@ -1,13 +1,13 @@
 # MintAndRestake Component
 
-A React component that provides a button to mint 10 stCORE tokens and automatically delegate them to the operator, with a modal showing the two-step process.
+A React component that provides a button to mint 10 stTOKEN tokens and automatically delegate them to the operator, with a modal showing the two-step process.
 
 ## Features
 
-- **Two-Step Process**: First mints 10 stCORE, then delegates it to the operator
+- **Two-Step Process**: First mints 10 stTOKEN, then delegates it to the operator
 - **Modal Interface**: Beautiful modal with step-by-step progress indication
 - **Automatic Flow**: Step 2 starts automatically after step 1 completes
-- **Real-time Balance**: Shows current stCORE balance
+- **Real-time Balance**: Shows current stTOKEN balance
 - **Transaction Tracking**: Displays transaction hashes for each step
 - **Error Handling**: Proper error handling with user feedback
 
@@ -50,7 +50,7 @@ function MyComponent() {
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `onComplete` | `() => void` | `undefined` | Callback function called when both steps are completed |
-| `showBalance` | `boolean` | `true` | Whether to show the current stCORE balance in the button |
+| `showBalance` | `boolean` | `true` | Whether to show the current stTOKEN balance in the button |
 
 ## Component Structure
 
@@ -59,14 +59,14 @@ The main component that renders the button and manages the modal state.
 
 ### MintAndRestakeModal
 The modal component that displays the two-step process with:
-- Step 1: Mint 10 stCORE
+- Step 1: Mint 10 stTOKEN
 - Step 2: Delegate to Operator
 
 ## Process Flow
 
 1. **User clicks button** → Modal opens
 2. **User clicks "Start Process"** → Step 1 begins
-3. **Step 1: Mint stCORE** → Calls `stCORE.mint(10)` function
+3. **Step 1: Mint stTOKEN** → Calls `stTOKEN.mint(10)` function
 4. **Step 1 completes** → Step 2 automatically starts
 5. **Step 2: Delegate** → Calls `Eigen.addDelegation(10)` function
 6. **Step 2 completes** → Modal shows completion state
@@ -75,7 +75,7 @@ The modal component that displays the two-step process with:
 ## Contract Integration
 
 The component integrates with:
-- **stCORE Contract**: For minting tokens
+- **stTOKEN Contract**: For minting tokens
 - **Eigen Contract**: For delegation to operator
 - **Contract Addresses**: From `deployed-address.json`
 

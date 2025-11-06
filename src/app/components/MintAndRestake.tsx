@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useAccount, usePublicClient, useWalletClient, useChainId } from 'wagmi';
 import { parseUnits, formatUnits } from 'viem';
-import stCOREJson from '@/contracts/stCORE.sol/stCORE.json';
+import stTOKENJson from '@/contracts/stTOKEN.sol/stTOKEN.json';
 import EigenJson from '@/contracts/Eigen.sol/Eigen.json';
 import { getContractAddress } from '@/config';
 
@@ -37,7 +37,7 @@ const MintAndRestakeModal: React.FC<MintAndRestakeModalProps> = ({
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style={{ zIndex: 999999, position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}>
             <div className="bg-black rounded-lg p-6 max-w-md w-full mx-4 backdrop-blur-sm" style={{ zIndex: 1000000, position: 'relative' }}>
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold text-white">Mint & Delegate 10 stCORE</h2>
+                    <h2 className="text-xl font-bold text-white">Mint & Delegate 10 stTOKEN</h2>
                     <button
                         onClick={onClose}
                         className="text-gray-400 hover:text-white text-2xl transition-colors"
@@ -58,8 +58,8 @@ const MintAndRestakeModal: React.FC<MintAndRestakeModalProps> = ({
                     <div className={`p-4 rounded-lg border-2 ${step >= 1 ? 'border-[#FF8C00] bg-black bg-opacity-50' : 'border-gray-700 bg-black bg-opacity-30'}`}>
                         <div className="flex items-center justify-between">
                             <div>
-                                <h3 className="font-semibold text-white">Step 1: Mint 10 stCORE</h3>
-                                <p className="text-sm text-gray-300">Minting stCORE tokens to your wallet</p>
+                                <h3 className="font-semibold text-white">Step 1: Mint 10 stTOKEN</h3>
+                                <p className="text-sm text-gray-300">Minting stTOKEN tokens to your wallet</p>
                             </div>
                             <div className="flex items-center space-x-2">
                                 {step > 1 && (
@@ -84,7 +84,7 @@ const MintAndRestakeModal: React.FC<MintAndRestakeModalProps> = ({
                         <div className="flex items-center justify-between">
                             <div>
                                 <h3 className="font-semibold text-white">Step 2: Delegate to Operator</h3>
-                                <p className="text-sm text-gray-300">Delegating stCORE to the operator</p>
+                                <p className="text-sm text-gray-300">Delegating stTOKEN to the operator</p>
                             </div>
                             <div className="flex items-center space-x-2">
                                 {step > 2 && (
@@ -211,7 +211,7 @@ const MintAndRestakeButton: React.FC<MintAndRestakeButtonProps> = ({ onComplete,
                 return;
             }
 
-            // Delegate 10 stCORE to the operator
+            // Delegate 10 stTOKEN to the operator
             const { request } = await publicClient.simulateContract({
                 address: eigenAddress as `0x${string}`,
                 abi: EigenJson.abi,
@@ -226,8 +226,8 @@ const MintAndRestakeButton: React.FC<MintAndRestakeButtonProps> = ({ onComplete,
             // Wait for transaction to complete
             await publicClient.waitForTransactionReceipt({ hash });
         } catch (error) {
-            console.error("Error delegating stCORE:", error);
-            setError(error instanceof Error ? error.message : "Failed to delegate stCORE");
+            console.error("Error delegating stTOKEN:", error);
+            setError(error instanceof Error ? error.message : "Failed to delegate stTOKEN");
             setStep(1);
         } finally {
             setIsStep2Loading(false);
@@ -266,23 +266,23 @@ const MintAndRestakeButton: React.FC<MintAndRestakeButtonProps> = ({ onComplete,
         setIsStep1Loading(true);
 
         try {
-            const stcoreAddress = getContractAddress("stCORE", chainId);
+            const stTOKENAddress = getContractAddress("stTOKEN", chainId);
 
-            if (stcoreAddress === '0x0000000000000000000000000000000000000000') {
-                setError("stCORE contract not available on current network");
+            if (stTOKENAddress === '0x0000000000000000000000000000000000000000') {
+                setError("stTOKEN contract not available on current network");
                 setStep(0);
                 return;
             }
 
-            // Convert 10 stCORE to units (18 decimals)
-            const stCOREAmountUnits = parseUnits("10", 18);
+            // Convert 10 stTOKEN to units (18 decimals)
+            const stTOKENAmountUnits = parseUnits("10", 18);
 
             // Prepare the mint transaction
             const { request } = await publicClient.simulateContract({
-                address: stcoreAddress as `0x${string}`,
-                abi: stCOREJson.abi,
+                address: stTOKENAddress as `0x${string}`,
+                abi: stTOKENJson.abi,
                 functionName: "mint",
-                args: [stCOREAmountUnits],
+                args: [stTOKENAmountUnits],
                 account: address,
             });
 
@@ -293,8 +293,8 @@ const MintAndRestakeButton: React.FC<MintAndRestakeButtonProps> = ({ onComplete,
             // Wait for transaction to complete
             await publicClient.waitForTransactionReceipt({ hash });
         } catch (error) {
-            console.error("Error minting stCORE:", error);
-            setError(error instanceof Error ? error.message : "Failed to mint stCORE");
+            console.error("Error minting stTOKEN:", error);
+            setError(error instanceof Error ? error.message : "Failed to mint stTOKEN");
             setStep(0);
         } finally {
             setIsStep1Loading(false);
@@ -308,7 +308,7 @@ const MintAndRestakeButton: React.FC<MintAndRestakeButtonProps> = ({ onComplete,
     if (!isConnected) {
         return (
             <div className="bg-black rounded-lg p-3 text-center backdrop-blur-sm">
-                <p className="text-gray-300 text-sm">Please connect your wallet to mint and delegate stCORE</p>
+                <p className="text-gray-300 text-sm">Please connect your wallet to mint and delegate stTOKEN</p>
             </div>
         );
     }
@@ -319,7 +319,7 @@ const MintAndRestakeButton: React.FC<MintAndRestakeButtonProps> = ({ onComplete,
                 onClick={() => setIsModalOpen(true)}
                 className="w-full bg-black border border-[#FF8C00] text-white py-2 px-4 rounded-lg hover:text-[#FF8C00] transition-colors font-semibold text-sm shadow-[0_0_15px_rgba(255,140,0,0.7)] hover:shadow-[0_0_20px_rgba(255,140,0,1)] cursor-pointer"
             >
-                Mint & Delegate 10 stCORE{showDelegated && ` • Delegated: ${formatDelegated(delegatedAmount)} stCORE`}
+                Mint & Delegate 10 stTOKEN{showDelegated && ` • Delegated: ${formatDelegated(delegatedAmount)} stTOKEN`}
             </button>
 
             <MintAndRestakeModal

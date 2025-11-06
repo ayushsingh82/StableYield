@@ -49,7 +49,7 @@ export default function TakeLoanButton({
 
         setIsLoading(true);
         try {
-            // Convert loan amount from cUSD to wei
+            // Convert loan amount from wUSDC to wei
             const loanAmountInWei = parseUnits(loanAmount, 18);
 
             const loanManagerAddress = getContractAddress("LoanManager", chainId);
@@ -93,7 +93,7 @@ export default function TakeLoanButton({
                         : `w-full bg-[#FF8C00] text-black py-3 rounded-lg font-medium hover:bg-opacity-90 transition-colors ${className}`
                 }
             >
-                {variant === "text" ? "Take Loan" : `Take ${presetAmount} cUSD Loan`}
+                {variant === "text" ? "Take Loan" : `Take ${presetAmount} wUSDC Loan`}
             </button>
 
             {/* Modal */}
@@ -113,7 +113,7 @@ export default function TakeLoanButton({
                         <form onSubmit={handleTakeLoan}>
                             <div className="mb-6">
                                 <label className="block text-gray-300 mb-2">
-                                    Loan Amount (cUSD)
+                                    Loan Amount (wUSDC)
                                 </label>
                                 <input
                                     type="number"
@@ -123,13 +123,13 @@ export default function TakeLoanButton({
                                     required
                                 />
                                 <p className="text-sm text-gray-400 mt-2">
-                                    Fixed loan amount: 10 cUSD
+                                    Fixed loan amount: 10 wUSDC
                                 </p>
                             </div>
 
                             <div className="mb-6">
                                 <label className="block text-gray-300 mb-2">
-                                    Current Delegation (stCORE)
+                                    Current Delegation (stTOKEN)
                                 </label>
                                 <input
                                     type="number"
@@ -144,7 +144,7 @@ export default function TakeLoanButton({
 
                             <div className="mb-6">
                                 <label className="block text-gray-300 mb-2">
-                                    Required Delegation (stCORE)
+                                    Required Delegation (stTOKEN)
                                 </label>
                                 <input
                                     type="number"

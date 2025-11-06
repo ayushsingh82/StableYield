@@ -3,10 +3,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useAccount, usePublicClient, useWalletClient } from "wagmi";
 import { parseUnits, formatUnits } from "viem";
-import stCOREJson from "@/contracts/stCORE.sol/stCORE.json";
+import stTOKENJson from "@/contracts/stTOKEN.sol/stTOKEN.json";
 import ContractAddresses from "../../deployed-address.json";
 
-const StCOREMint = () => {
+const stTOKENMint = () => {
   const [amount, setAmount] = useState("");
   const [balance, setBalance] = useState("0");
   const [loading, setLoading] = useState(false);
@@ -23,13 +23,13 @@ const StCOREMint = () => {
 
     try {
       const balanceData = await publicClient.readContract({
-        address: ContractAddresses.stCORE as `0x${string}`,
-        abi: stCOREJson.abi,
+        address: ContractAddresses.stTOKEN as `0x${string}`,
+        abi: stTOKENJson.abi,
         functionName: "balanceOf",
         args: [address],
       });
 
-      setBalance(formatUnits(balanceData as bigint, 18)); // stCORE has 18 decimals
+      setBalance(formatUnits(balanceData as bigint, 18)); // stTOKEN has 18 decimals
     } catch (err) {
       console.error("Error fetching balance:", err);
     }
@@ -77,8 +77,8 @@ const StCOREMint = () => {
 
       // Prepare the mint transaction
       const { request } = await publicClient.simulateContract({
-        address: ContractAddresses.stCORE as `0x${string}`,
-        abi: stCOREJson.abi,
+        address: ContractAddresses.stTOKEN as `0x${string}`,
+        abi: stTOKENJson.abi,
         functionName: "mint",
         args: [amountInWei],
         account: address,
@@ -93,13 +93,13 @@ const StCOREMint = () => {
       // Update balance and reset form
       fetchBalance();
       setAmount("");
-      setSuccess(`Successfully minted ${amount} stCORE!`);
+      setSuccess(`Successfully minted ${amount} stTOKEN!`);
     } catch (err: unknown) {
-      console.error("Error minting stCORE:", err);
+      console.error("Error minting stTOKEN:", err);
       const errorMessage =
         err instanceof Error
           ? err.message
-          : "Failed to mint stCORE. Please try again.";
+          : "Failed to mint stTOKEN. Please try again.";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -118,13 +118,13 @@ const StCOREMint = () => {
             fontFamily: "monospace",
           }}
         >
-          stCORE MINTER
+          stTOKEN MINTER
         </h1>
 
         {!isConnected ? (
           <div className="bg-black border border-gray-800 p-6 rounded-lg shadow-lg mb-6 backdrop-blur-sm bg-[radial-gradient(#333_1px,transparent_1px)] bg-[size:10px_10px]">
             <p className="text-center text-gray-300">
-              Please connect your wallet to mint stCORE
+              Please connect your wallet to mint stTOKEN
             </p>
           </div>
         ) : (
@@ -132,9 +132,9 @@ const StCOREMint = () => {
             <div className="bg-black border border-gray-800 p-6 rounded-lg shadow-lg mb-6 backdrop-blur-sm bg-[radial-gradient(#333_1px,transparent_1px)] bg-[size:10px_10px]">
               <div className="mb-4">
                 <p className="text-gray-300 mb-2">
-                  Your stCORE Balance:{" "}
+                  Your stTOKEN Balance:{" "}
                   <span className="text-[#FF8C00] font-bold">
-                    {balance} stCORE
+                    {balance} stTOKEN
                   </span>
                 </p>
               </div>
@@ -164,7 +164,7 @@ const StCOREMint = () => {
                   loading ? "opacity-70" : ""
                 } bg-black border border-[#FF8C00] shadow-[0_0_15px_rgba(255,140,0,0.7)] hover:shadow-[0_0_20px_rgba(255,140,0,1)] hover:text-[#FF8C00]`}
               >
-                {loading ? "Processing..." : "Mint stCORE"}
+                {loading ? "Processing..." : "Mint stTOKEN"}
               </button>
 
               {error && (
@@ -178,18 +178,18 @@ const StCOREMint = () => {
 
             <div className="bg-black border border-gray-800 p-4 rounded-lg backdrop-blur-sm bg-[radial-gradient(#333_1px,transparent_1px)] bg-[size:10px_10px]">
               <h2 className="text-lg font-semibold mb-2 text-[#FF8C00]">
-                About stCORE
+                About stTOKEN
               </h2>
               <p className="text-gray-300 mb-2">
-                This is a testnet version of Liquid Staking Tokens (stCORE) that
+                This is a testnet version of Liquid Staking Tokens (stTOKEN) that
                 you can mint freely for testing purposes.
               </p>
               <p className="text-gray-300">
-                In production, stCOREs represent staked ETH that can be used in
+                In production, stTOKENs represent staked ETH that can be used in
                 DeFi while earning staking rewards.
               </p>
               <p className="text-gray-300 mt-2">
-                stCOREs are used in the StableYield protocol for restaking,
+                stTOKENs are used in the StableYield protocol for restaking,
                 allowing operators to provide security to multiple networks
                 simultaneously.
               </p>
@@ -201,4 +201,4 @@ const StCOREMint = () => {
   );
 };
 
-export default StCOREMint;
+export default stTOKENMint;

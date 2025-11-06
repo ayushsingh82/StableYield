@@ -1,13 +1,13 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "sCUSD",
-  "sourceName": "contracts/sCUSD.sol",
+  "contractName": "stUSDC",
+  "sourceName": "contracts/stUSDC.sol",
   "abi": [
     {
       "inputs": [
         {
           "internalType": "address",
-          "name": "_CUSDToken",
+          "name": "_wUSDCToken",
           "type": "address"
         }
       ],
@@ -237,11 +237,11 @@
         {
           "indexed": true,
           "internalType": "address",
-          "name": "CUSDAddress",
+          "name": "wUSDCAddress",
           "type": "address"
         }
       ],
-      "name": "CUSDAddressSet",
+      "name": "wUSDCAddressSet",
       "type": "event"
     },
     {
@@ -358,10 +358,10 @@
     },
     {
       "inputs": [],
-      "name": "CUSDToken",
+      "name": "wUSDCToken",
       "outputs": [
         {
-          "internalType": "contract CUSD",
+          "internalType": "contract wUSDC",
           "name": "",
           "type": "address"
         }

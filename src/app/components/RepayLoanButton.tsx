@@ -128,14 +128,14 @@ export default function RepayLoanButton({
                                     Loan to Repay
                                 </label>
                                 <div className="w-full p-4 bg-gray-900 rounded-lg text-white">
-                                    {loanDetails.amount} cUSD (Due:{" "}
+                                    {loanDetails.amount} wUSDC (Due:{" "}
                                     {new Date(Number(loanDetails.dueTime) * 1000).toLocaleDateString()})
                                 </div>
                             </div>
 
                             <div className="mb-6">
                                 <label className="block text-gray-300 mb-2">
-                                    Repayment Amount (cUSD)
+                                    Repayment Amount (wUSDC)
                                 </label>
                                 <input
                                     type="number"
@@ -153,20 +153,20 @@ export default function RepayLoanButton({
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <p className="text-gray-400">Principal</p>
-                                        <p className="font-medium">{loanDetails.amount} cUSD</p>
+                                        <p className="font-medium">{loanDetails.amount} wUSDC</p>
                                     </div>
                                     <div>
                                         <p className="text-gray-400">Additional Amount Due</p>
                                         <p className="font-medium">
                                             {isNaN(parseFloat(repayAmount) - parseFloat(loanDetails.amount))
                                                 ? "0.0000"
-                                                : (parseFloat(repayAmount) - parseFloat(loanDetails.amount)).toFixed(4)} cUSD
+                                                : (parseFloat(repayAmount) - parseFloat(loanDetails.amount)).toFixed(4)} wUSDC
                                         </p>
                                     </div>
                                     <div>
                                         <p className="text-gray-400">Delegation to Release</p>
                                         <p className="font-medium">
-                                            {loanDetails.collateralAmount} stCORE
+                                            {loanDetails.collateralAmount} stTOKEN
                                         </p>
                                     </div>
                                     <div>

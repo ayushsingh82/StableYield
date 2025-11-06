@@ -50,9 +50,9 @@ export const supportedChains = {
 // Update the interfaces
 interface BaseAddresses {
   USDC: string;
-  stCORE: string;
-  CUSD: string;
-  sCUSD: string;
+  stTOKEN: string;
+  wUSDC: string;
+  stUSDC: string;
   Operator: string;
   Eigen: string;
   LoanManager: string;
@@ -68,18 +68,18 @@ export const contractAddresses: {
 } = {
   hardhat: {
     USDC: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-    CUSD: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0', // Changed from PUSDC to CUSD
-    stCORE: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
-    sCUSD: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
+    wUSDC: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0', // Changed from PUSDC to wUSDC
+    stTOKEN: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+    stUSDC: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
     Eigen: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
     Operator: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
     LoanManager: '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853',
   },
   coreTestnet2: {
     USDC: '0x3eCA9205a5A8b602067B2a58F60C30EA020FeCeb',
-    stCORE: '0x58f4BBC38d592F253fB98C53A4D2f55B8DBF51a7',
-    CUSD: '0x71E00C10F924355453bCF8fe86F6B63980f859DD',
-    sCUSD: '0x5BC5C3A0F7ee4465DFCC1ad9526d9Bf107361AD1',
+    stTOKEN: '0x58f4BBC38d592F253fB98C53A4D2f55B8DBF51a7',
+    wUSDC: '0x71E00C10F924355453bCF8fe86F6B63980f859DD',
+    stUSDC: '0x5BC5C3A0F7ee4465DFCC1ad9526d9Bf107361AD1',
     Operator: '0x025f719646013A8b69b8568F105c67e60D14d8ab',
     Eigen: '0x6C2ba32a3ADBA2D61a02F5EAe3bd86F59B6a7B18',
     LoanManager: '0x0b3827aE16a73887F3C5c25d13CF5Ea4a2772c3C'
@@ -109,7 +109,7 @@ export const ABIs = {
   operatorRegistry: [
     // Add ABI here
   ],
-  restakingstCORE: [
+  restakingstTOKEN: [
     // Add ABI here
   ],
 };

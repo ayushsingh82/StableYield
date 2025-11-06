@@ -52,7 +52,7 @@ const Navbar = () => {
             href="/cpusd"
             className="font-medium tracking-wide hover:text-[#FF8C00] transition duration-300"
           >
-            SCUSD
+            stUSDC
           </Link> */}
           {/* <Link
             href="/usdc"
@@ -67,10 +67,10 @@ const Navbar = () => {
             SWAP
           </Link>
           {/* <Link
-            href="/stCORE"
+            href="/stTOKEN"
             className="font-medium tracking-wide hover:text-[#FF8C00] transition duration-300"
           >
-            stCORE
+            stTOKEN
           </Link> */}
         </div>
 

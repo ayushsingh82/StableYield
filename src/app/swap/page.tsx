@@ -3,21 +3,21 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useAccount, usePublicClient, useWalletClient, useChainId } from "wagmi";
 import { parseUnits, formatUnits } from "viem";
-import CUSDJson from "@/contracts/CUSD.sol/CUSD.json";
-import sCUSDJson from "@/contracts/sCUSD.sol/sCUSD.json";
+import wUSDCJson from "@/contracts/wUSDC.sol/wUSDC.json";
+import stUSDCJson from "@/contracts/stUSDC.sol/stUSDC.json";
 import { getContractAddress } from "../../config";
-import MintCusdButton from "../components/MintCusdButton";
+import MintwUSDCButton from "../components/MintwUSDCButton";
 
 const SwapPage = () => {
-  const [fromToken, setFromToken] = useState("CUSD");
-  const [toToken, setToToken] = useState("stcUSD");
+  const [fromToken, setFromToken] = useState("wUSDC");
+  const [toToken, setToToken] = useState("stwUSDC");
   const [fromAmount, setFromAmount] = useState("");
   const [toAmount, setToAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [CUSDBalance, setCUSDBalance] = useState("0");
-  const [stcUSDBalance, setStcUSDBalance] = useState("0");
+  const [wUSDCBalance, setwUSDCBalance] = useState("0");
+  const [stwUSDCBalance, setStwUSDCBalance] = useState("0");
 
   // Fetch current exchange rate from vault
   const [currentRate, setCurrentRate] = useState<string>("1.0");
@@ -32,8 +32,8 @@ const SwapPage = () => {
     if (!publicClient) return;
 
     try {
-      const sCUSDAddress = getContractAddress("sCUSD", chainId);
-      if (sCUSDAddress === '0x0000000000000000000000000000000000000000') {
+      const stUSDCAddress = getContractAddress("stUSDC", chainId);
+      if (stUSDCAddress === '0x0000000000000000000000000000000000000000') {
         setCurrentRate("1.0");
         return;
       }
@@ -41,15 +41,15 @@ const SwapPage = () => {
       // Get rate by checking how many shares 1 asset would give
       const oneAsset = parseUnits("1", 18);
       const sharesForOneAsset = await publicClient.readContract({
-        address: sCUSDAddress as `0x${string}`,
-        abi: sCUSDJson.abi,
+        address: stUSDCAddress as `0x${string}`,
+        abi: stUSDCJson.abi,
         functionName: "previewDeposit",
         args: [oneAsset],
       });
 
       if (sharesForOneAsset && typeof sharesForOneAsset === 'bigint') {
         const rate = formatUnits(sharesForOneAsset, 18);
-        console.log(`Debug: Current vault rate - 1 cUSD = ${rate} stcUSD (raw: ${sharesForOneAsset.toString()})`);
+        console.log(`Debug: Current vault rate - 1 wUSDC = ${rate} stwUSDC (raw: ${sharesForOneAsset.toString()})`);
         setCurrentRate(rate);
       } else {
         console.error("Invalid shares result:", sharesForOneAsset);
@@ -70,23 +70,23 @@ const SwapPage = () => {
     if (!publicClient) return;
 
     try {
-      const sCUSDAddress = getContractAddress("sCUSD", chainId);
-      if (sCUSDAddress === '0x0000000000000000000000000000000000000000') {
-        console.log("Debug: sCUSD contract not deployed");
+      const stUSDCAddress = getContractAddress("stUSDC", chainId);
+      if (stUSDCAddress === '0x0000000000000000000000000000000000000000') {
+        console.log("Debug: stUSDC contract not deployed");
         return;
       }
 
       // Check total assets and total supply
       const totalAssets = await publicClient.readContract({
-        address: sCUSDAddress as `0x${string}`,
-        abi: sCUSDJson.abi,
+        address: stUSDCAddress as `0x${string}`,
+        abi: stUSDCJson.abi,
         functionName: "totalAssets",
         args: [],
       });
 
       const totalSupply = await publicClient.readContract({
-        address: sCUSDAddress as `0x${string}`,
-        abi: sCUSDJson.abi,
+        address: stUSDCAddress as `0x${string}`,
+        abi: stUSDCJson.abi,
         functionName: "totalSupply",
         args: [],
       });
@@ -194,49 +194,49 @@ const SwapPage = () => {
     if (!address || !publicClient) return;
 
     try {
-      const CUSDAddress = getContractAddress("CUSD", chainId);
-      const sCUSDAddress = getContractAddress("sCUSD", chainId);
+      const wUSDCAddress = getContractAddress("wUSDC", chainId);
+      const stUSDCAddress = getContractAddress("stUSDC", chainId);
 
-      // Fetch CUSD balance
-      if (CUSDAddress !== '0x0000000000000000000000000000000000000000') {
-        const CUSDBalanceData = await publicClient.readContract({
-          address: CUSDAddress as `0x${string}`,
-          abi: CUSDJson.abi,
+      // Fetch wUSDC balance
+      if (wUSDCAddress !== '0x0000000000000000000000000000000000000000') {
+        const wUSDCBalanceData = await publicClient.readContract({
+          address: wUSDCAddress as `0x${string}`,
+          abi: wUSDCJson.abi,
           functionName: "balanceOf",
           args: [address],
         });
-        if (CUSDBalanceData && typeof CUSDBalanceData === 'bigint') {
-          const cusdDecimals = await getTokenDecimals(CUSDAddress);
-          const formattedBalance = formatUnits(CUSDBalanceData, cusdDecimals);
-          console.log(`Debug: CUSD Balance - Raw: ${CUSDBalanceData.toString()}, Decimals: ${cusdDecimals}, Formatted: ${formattedBalance}`);
-          setCUSDBalance(formattedBalance);
+        if (wUSDCBalanceData && typeof wUSDCBalanceData === 'bigint') {
+          const wUSDCDecimals = await getTokenDecimals(wUSDCAddress);
+          const formattedBalance = formatUnits(wUSDCBalanceData, wUSDCDecimals);
+          console.log(`Debug: wUSDC Balance - Raw: ${wUSDCBalanceData.toString()}, Decimals: ${wUSDCDecimals}, Formatted: ${formattedBalance}`);
+          setwUSDCBalance(formattedBalance);
         }
       }
 
-      // Fetch stcUSD (sCUSD) balance
-      if (sCUSDAddress !== '0x0000000000000000000000000000000000000000') {
-        const stcUSDBalanceData = await publicClient.readContract({
-          address: sCUSDAddress as `0x${string}`,
-          abi: sCUSDJson.abi,
+      // Fetch stwUSDC (stUSDC) balance
+      if (stUSDCAddress !== '0x0000000000000000000000000000000000000000') {
+        const stwUSDCBalanceData = await publicClient.readContract({
+          address: stUSDCAddress as `0x${string}`,
+          abi: stUSDCJson.abi,
           functionName: "balanceOf",
           args: [address],
         });
-        if (stcUSDBalanceData && typeof stcUSDBalanceData === 'bigint') {
-          const stcusdDecimals = await getTokenDecimals(sCUSDAddress);
-          const formattedBalance = formatUnits(stcUSDBalanceData, stcusdDecimals);
-          console.log(`Debug: stcUSD Balance - Raw: ${stcUSDBalanceData.toString()}, Decimals: ${stcusdDecimals}, Formatted: ${formattedBalance}`);
-          console.log(`Debug: stcUSD Balance - Raw length: ${stcUSDBalanceData.toString().length}`);
-          console.log(`Debug: stcUSD Balance - Is zero: ${stcUSDBalanceData === BigInt(0)}`);
-          console.log(`Debug: stcUSD Balance - Manual calculation: ${stcUSDBalanceData.toString()} / 10^${stcusdDecimals} = ${Number(stcUSDBalanceData) / Math.pow(10, stcusdDecimals)}`);
+        if (stwUSDCBalanceData && typeof stwUSDCBalanceData === 'bigint') {
+          const stwUSDCDecimals = await getTokenDecimals(stUSDCAddress);
+          const formattedBalance = formatUnits(stwUSDCBalanceData, stwUSDCDecimals);
+          console.log(`Debug: stwUSDC Balance - Raw: ${stwUSDCBalanceData.toString()}, Decimals: ${stwUSDCDecimals}, Formatted: ${formattedBalance}`);
+          console.log(`Debug: stwUSDC Balance - Raw length: ${stwUSDCBalanceData.toString().length}`);
+          console.log(`Debug: stwUSDC Balance - Is zero: ${stwUSDCBalanceData === BigInt(0)}`);
+          console.log(`Debug: stwUSDC Balance - Manual calculation: ${stwUSDCBalanceData.toString()} / 10^${stwUSDCDecimals} = ${Number(stwUSDCBalanceData) / Math.pow(10, stwUSDCDecimals)}`);
 
-          setStcUSDBalance(formattedBalance);
+          setStwUSDCBalance(formattedBalance);
         } else {
-          console.error("Debug: stcUSD Balance data is invalid:", stcUSDBalanceData);
-          setStcUSDBalance("0");
+          console.error("Debug: stwUSDC Balance data is invalid:", stwUSDCBalanceData);
+          setStwUSDCBalance("0");
         }
       } else {
-        console.log("Debug: sCUSD contract address not found");
-        setStcUSDBalance("0");
+        console.log("Debug: stUSDC contract address not found");
+        setStwUSDCBalance("0");
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -262,8 +262,8 @@ const SwapPage = () => {
     }
 
     try {
-      const sCUSDAddress = getContractAddress("sCUSD", chainId);
-      if (sCUSDAddress === '0x0000000000000000000000000000000000000000') {
+      const stUSDCAddress = getContractAddress("stUSDC", chainId);
+      if (stUSDCAddress === '0x0000000000000000000000000000000000000000') {
         setToAmount(fromAmount); // 1:1 rate if contract not available
         return;
       }
@@ -275,19 +275,19 @@ const SwapPage = () => {
         return;
       }
 
-      if (fromToken === "CUSD" && toToken === "stcUSD") {
-        // Converting cUSD to stcUSD (deposit) - use previewDeposit for accurate amount
+      if (fromToken === "wUSDC" && toToken === "stwUSDC") {
+        // Converting wUSDC to stwUSDC (deposit) - use previewDeposit for accurate amount
         const previewShares = await publicClient.readContract({
-          address: sCUSDAddress as `0x${string}`,
-          abi: sCUSDJson.abi,
+          address: stUSDCAddress as `0x${string}`,
+          abi: stUSDCJson.abi,
           functionName: "previewDeposit",
           args: [inputAmount],
         });
 
         // Also get convertToShares for comparison
         const convertToSharesResult = await publicClient.readContract({
-          address: sCUSDAddress as `0x${string}`,
-          abi: sCUSDJson.abi,
+          address: stUSDCAddress as `0x${string}`,
+          abi: stUSDCJson.abi,
           functionName: "convertToShares",
           args: [inputAmount],
         });
@@ -296,8 +296,8 @@ const SwapPage = () => {
           const sharesAmount = formatUnits(previewShares, 18);
           if (convertToSharesResult && typeof convertToSharesResult === 'bigint') {
             const convertAmount = formatUnits(convertToSharesResult, 18);
-            console.log(`Debug: ${fromAmount} cUSD -> ${sharesAmount} stcUSD (previewDeposit: ${previewShares.toString()})`);
-            console.log(`Debug: ${fromAmount} cUSD -> ${convertAmount} stcUSD (convertToShares: ${convertToSharesResult.toString()})`);
+            console.log(`Debug: ${fromAmount} wUSDC -> ${sharesAmount} stwUSDC (previewDeposit: ${previewShares.toString()})`);
+            console.log(`Debug: ${fromAmount} wUSDC -> ${convertAmount} stwUSDC (convertToShares: ${convertToSharesResult.toString()})`);
           }
 
           // Validate the exchange rate
@@ -313,19 +313,19 @@ const SwapPage = () => {
           console.error("Invalid preview shares result:", previewShares);
           setToAmount(fromAmount); // Fallback to 1:1
         }
-      } else if (fromToken === "stcUSD" && toToken === "CUSD") {
-        // Converting stcUSD to cUSD (withdraw) - use previewRedeem for accurate amount
+      } else if (fromToken === "stwUSDC" && toToken === "wUSDC") {
+        // Converting stwUSDC to wUSDC (withdraw) - use previewRedeem for accurate amount
         const previewAssets = await publicClient.readContract({
-          address: sCUSDAddress as `0x${string}`,
-          abi: sCUSDJson.abi,
+          address: stUSDCAddress as `0x${string}`,
+          abi: stUSDCJson.abi,
           functionName: "previewRedeem",
           args: [inputAmount],
         });
 
         // Also get convertToAssets for comparison
         const convertToAssetsResult = await publicClient.readContract({
-          address: sCUSDAddress as `0x${string}`,
-          abi: sCUSDJson.abi,
+          address: stUSDCAddress as `0x${string}`,
+          abi: stUSDCJson.abi,
           functionName: "convertToAssets",
           args: [inputAmount],
         });
@@ -334,8 +334,8 @@ const SwapPage = () => {
           const assetsAmount = formatUnits(previewAssets, 18);
           if (convertToAssetsResult && typeof convertToAssetsResult === 'bigint') {
             const convertAmount = formatUnits(convertToAssetsResult, 18);
-            console.log(`Debug: ${fromAmount} stcUSD -> ${assetsAmount} cUSD (previewRedeem: ${previewAssets.toString()})`);
-            console.log(`Debug: ${fromAmount} stcUSD -> ${convertAmount} cUSD (convertToAssets: ${convertToAssetsResult.toString()})`);
+            console.log(`Debug: ${fromAmount} stwUSDC -> ${assetsAmount} wUSDC (previewRedeem: ${previewAssets.toString()})`);
+            console.log(`Debug: ${fromAmount} stwUSDC -> ${convertAmount} wUSDC (convertToAssets: ${convertToAssetsResult.toString()})`);
           }
 
           // Validate the exchange rate
@@ -375,32 +375,32 @@ const SwapPage = () => {
     setSuccess("");
 
     try {
-      const CUSDAddress = getContractAddress("CUSD", chainId);
-      const sCUSDAddress = getContractAddress("sCUSD", chainId);
+      const wUSDCAddress = getContractAddress("wUSDC", chainId);
+      const stUSDCAddress = getContractAddress("stUSDC", chainId);
 
-      if (!CUSDAddress || !sCUSDAddress) {
+      if (!wUSDCAddress || !stUSDCAddress) {
         throw new Error("Contract addresses not found");
       }
 
       const inputAmount = parseUnits(fromAmount, 18);
 
-      if (fromToken === "CUSD" && toToken === "stcUSD") {
-        // First, approve CUSD spending by sCUSD vault
+      if (fromToken === "wUSDC" && toToken === "stwUSDC") {
+        // First, approve wUSDC spending by stUSDC vault
         const { request: approveRequest } = await publicClient.simulateContract({
-          address: CUSDAddress as `0x${string}`,
-          abi: CUSDJson.abi,
+          address: wUSDCAddress as `0x${string}`,
+          abi: wUSDCJson.abi,
           functionName: "approve",
-          args: [sCUSDAddress as `0x${string}`, inputAmount],
+          args: [stUSDCAddress as `0x${string}`, inputAmount],
           account: address,
         });
 
         const approveHash = await walletClient.writeContract(approveRequest);
         await publicClient.waitForTransactionReceipt({ hash: approveHash });
 
-        // Then deposit CUSD to get stcUSD (sCUSD)
+        // Then deposit wUSDC to get stwUSDC (stUSDC)
         const { request: depositRequest } = await publicClient.simulateContract({
-          address: sCUSDAddress as `0x${string}`,
-          abi: sCUSDJson.abi,
+          address: stUSDCAddress as `0x${string}`,
+          abi: stUSDCJson.abi,
           functionName: "deposit",
           args: [inputAmount, address],
           account: address,
@@ -409,12 +409,12 @@ const SwapPage = () => {
         const depositHash = await walletClient.writeContract(depositRequest);
         await publicClient.waitForTransactionReceipt({ hash: depositHash });
 
-        setSuccess(`Successfully swapped ${fromAmount} cUSD for ${toAmount} stcUSD!`);
-      } else if (fromToken === "stcUSD" && toToken === "CUSD") {
-        // Redeem stcUSD to get CUSD
+        setSuccess(`Successfully swapped ${fromAmount} wUSDC for ${toAmount} stwUSDC!`);
+      } else if (fromToken === "stwUSDC" && toToken === "wUSDC") {
+        // Redeem stwUSDC to get wUSDC
         const { request: redeemRequest } = await publicClient.simulateContract({
-          address: sCUSDAddress as `0x${string}`,
-          abi: sCUSDJson.abi,
+          address: stUSDCAddress as `0x${string}`,
+          abi: stUSDCJson.abi,
           functionName: "redeem",
           args: [inputAmount, address, address],
           account: address,
@@ -423,7 +423,7 @@ const SwapPage = () => {
         const redeemHash = await walletClient.writeContract(redeemRequest);
         await publicClient.waitForTransactionReceipt({ hash: redeemHash });
 
-        setSuccess(`Successfully swapped ${fromAmount} stcUSD for ${toAmount} cUSD!`);
+        setSuccess(`Successfully swapped ${fromAmount} stwUSDC for ${toAmount} wUSDC!`);
       }
 
       setFromAmount("");
@@ -470,12 +470,12 @@ const SwapPage = () => {
 
   // Handle max button
   const handleMaxClick = useCallback(() => {
-    if (fromToken === "CUSD") {
-      setFromAmount(CUSDBalance);
-    } else if (fromToken === "stcUSD") {
-      setFromAmount(stcUSDBalance);
+    if (fromToken === "wUSDC") {
+      setFromAmount(wUSDCBalance);
+    } else if (fromToken === "stwUSDC") {
+      setFromAmount(stwUSDCBalance);
     }
-  }, [fromToken, CUSDBalance, stcUSDBalance]);
+  }, [fromToken, wUSDCBalance, stwUSDCBalance]);
 
   // Fetch balances on mount and when address changes
   useEffect(() => {
@@ -505,12 +505,12 @@ const SwapPage = () => {
         {/* Header */}
         <div className="text-center mb-8 animate-fade-in">
           <h1 className="text-4xl font-bold text-[#FF8C00] mb-2">Stake</h1>
-          <p className="text-gray-400">Stake cUSD to earn rewards or unstake stcUSD to get cUSD back</p>
+          <p className="text-gray-400">Stake wUSDC to earn rewards or unstake stwUSDC to get wUSDC back</p>
         </div>
 
         <div className="flex justify-end mb-4">
           <div className="w-[150px]">
-            <MintCusdButton onMintComplete={fetchBalances} showBalance={false} />
+            <MintwUSDCButton onMintComplete={fetchBalances} showBalance={false} />
           </div>
         </div>
 
@@ -540,7 +540,7 @@ const SwapPage = () => {
                 <span className="text-gray-400 text-sm">From</span>
                 <div className="flex items-center space-x-2">
                   <span className="text-sm text-gray-400">
-                    Balance: {fromToken === "CUSD" ? displayBalance(CUSDBalance) : displayBalance(stcUSDBalance)}
+                    Balance: {fromToken === "wUSDC" ? displayBalance(wUSDCBalance) : displayBalance(stwUSDCBalance)}
                   </span>
                   <button
                     onClick={handleMaxClick}
@@ -561,8 +561,8 @@ const SwapPage = () => {
                   />
                 </div>
                 <div className="flex items-center space-x-2 bg-gray-700 rounded-lg px-3 py-1">
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center ${fromToken === "CUSD" ? "bg-[#FF8C00]" : "bg-[#FF6347]"}`}>
-                    <span className="text-white font-bold text-xs">{fromToken === "CUSD" ? "C" : "S"}</span>
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center ${fromToken === "wUSDC" ? "bg-[#FF8C00]" : "bg-[#FF6347]"}`}>
+                    <span className="text-white font-bold text-xs">{fromToken === "wUSDC" ? "C" : "S"}</span>
                   </div>
                   <span className="font-semibold text-sm">{fromToken}</span>
                 </div>
@@ -600,7 +600,7 @@ const SwapPage = () => {
               ) : (
                 <>
                   <div className="text-sm text-gray-400">
-                    Current Rate: 1 cUSD ≈ {formatEthStyle(currentRate, 8)} stcUSD
+                    Current Rate: 1 wUSDC ≈ {formatEthStyle(currentRate, 8)} stwUSDC
                   </div>
                   <div className="text-xs text-gray-500 mt-1">
                     Rate updates based on vault performance
@@ -614,7 +614,7 @@ const SwapPage = () => {
               <div className="flex justify-between items-center mb-2">
                 <span className="text-gray-400 text-sm">To</span>
                 <span className="text-sm text-gray-400">
-                  Balance: {toToken === "CUSD" ? displayBalance(CUSDBalance) : displayBalance(stcUSDBalance)}
+                  Balance: {toToken === "wUSDC" ? displayBalance(wUSDCBalance) : displayBalance(stwUSDCBalance)}
                 </span>
               </div>
               <div className="flex items-center space-x-4">
@@ -628,8 +628,8 @@ const SwapPage = () => {
                   />
                 </div>
                 <div className="flex items-center space-x-2 bg-gray-700 rounded-lg px-3 py-1">
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center ${toToken === "CUSD" ? "bg-[#FF8C00]" : "bg-[#FF6347]"}`}>
-                    <span className="text-white font-bold text-xs">{toToken === "CUSD" ? "C" : "S"}</span>
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center ${toToken === "wUSDC" ? "bg-[#FF8C00]" : "bg-[#FF6347]"}`}>
+                    <span className="text-white font-bold text-xs">{toToken === "wUSDC" ? "C" : "S"}</span>
                   </div>
                   <span className="font-semibold text-sm">{toToken}</span>
                 </div>
@@ -685,13 +685,13 @@ const SwapPage = () => {
               }}></div>
             </div>
             <div className="relative z-10">
-              <h3 className="text-lg font-semibold text-[#FF8C00] mb-3">About cUSD</h3>
+              <h3 className="text-lg font-semibold text-[#FF8C00] mb-3">About wUSDC</h3>
               <p className="text-gray-400 text-sm mb-4">
-                cUSD is the native stablecoin of the StableYield ecosystem. It&apos;s used as the base asset for trading and lending.
+                wUSDC is the native stablecoin of the StableYield ecosystem. It&apos;s used as the base asset for trading and lending.
               </p>
-              <h3 className="text-lg font-semibold text-[#FF6347] mb-3">About stcUSD</h3>
+              <h3 className="text-lg font-semibold text-[#FF6347] mb-3">About stwUSDC</h3>
               <p className="text-gray-400 text-sm">
-                stcUSD represents staked cUSD shares. By swapping cUSD for stcUSD, you&apos;re depositing into the vault and earning yield.
+                stwUSDC represents staked wUSDC shares. By swapping wUSDC for stwUSDC, you&apos;re depositing into the vault and earning yield.
               </p>
             </div>
           </div>

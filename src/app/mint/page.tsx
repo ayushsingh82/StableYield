@@ -4,13 +4,13 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useAccount, usePublicClient, useWalletClient, useChainId } from "wagmi";
 import { parseUnits, formatUnits } from "viem";
 import USDCJson from "@/contracts/USDC/USDC.json";
-import CUSDJson from "@/contracts/CUSD.sol/CUSD.json";
+import wUSDCJson from "@/contracts/wUSDC.sol/wUSDC.json";
 import { getContractAddress, supportedChains } from "../../config";
 
 const MintPage = () => {
   const [amount, setAmount] = useState("");
   const [USDCBalance, setUSDCBalance] = useState("0");
-  const [CUSDBalance, setCUSDBalance] = useState("0");
+  const [wUSDCBalance, setwUSDCBalance] = useState("0");
   const [loading, setLoading] = useState(false);
   const [USDCLoading, setUSDCLoading] = useState(false);
   const [error, setError] = useState("");
@@ -29,7 +29,7 @@ const MintPage = () => {
     try {
       // Get contract addresses for current network
       const USDCAddress = getContractAddress("USDC", chainId);
-      const cusdAddress = getContractAddress("CUSD", chainId);
+      const wUSDCAddress = getContractAddress("wUSDC", chainId);
       // Fetch USDC balance
       if (USDCAddress !== '0x0000000000000000000000000000000000000000') {
         const USDCBalanceData = await publicClient.readContract({
@@ -42,21 +42,21 @@ const MintPage = () => {
       } else {
         setUSDCBalance("0");
       }
-      // Fetch CUSD balance
-      if (cusdAddress !== '0x0000000000000000000000000000000000000000') {
-        const CUSDBalanceData = await publicClient.readContract({
-          address: cusdAddress as `0x${string}`,
-          abi: CUSDJson.abi,
+      // Fetch wUSDC balance
+      if (wUSDCAddress !== '0x0000000000000000000000000000000000000000') {
+        const wUSDCBalanceData = await publicClient.readContract({
+          address: wUSDCAddress as `0x${string}`,
+          abi: wUSDCJson.abi,
           functionName: "balanceOf",
           args: [address],
         });
-        setCUSDBalance(formatUnits(CUSDBalanceData as bigint, 18)); // CUSD has 18 decimals
+        setwUSDCBalance(formatUnits(wUSDCBalanceData as bigint, 18)); // wUSDC has 18 decimals
       } else {
-        setCUSDBalance("0");
+        setwUSDCBalance("0");
       }
     } catch {
       setUSDCBalance("0");
-      setCUSDBalance("0");
+      setwUSDCBalance("0");
     }
   }, [address, publicClient, chainId]);
 
@@ -74,7 +74,7 @@ const MintPage = () => {
     }
   }, [address, isConnected, publicClient, chainId, fetchBalances]);
 
-  // Handle input change for CUSD
+  // Handle input change for wUSDC
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     // Only allow numbers and decimals
@@ -138,7 +138,7 @@ const MintPage = () => {
     }
   };
 
-  // Handle approve and mint CUSD
+  // Handle approve and mint wUSDC
   const handleMint = async () => {
     if (!amount || parseFloat(amount) <= 0) {
       setError("Please enter a valid amount");
@@ -157,10 +157,10 @@ const MintPage = () => {
     try {
       // Get contract addresses for current network
       const USDCAddress = getContractAddress("USDC", chainId);
-      const cusdAddress = getContractAddress("CUSD", chainId);
+      const wUSDCAddress = getContractAddress("wUSDC", chainId);
 
       if (USDCAddress === '0x0000000000000000000000000000000000000000' ||
-        cusdAddress === '0x0000000000000000000000000000000000000000') {
+        wUSDCAddress === '0x0000000000000000000000000000000000000000') {
         setError("Contracts not available on current network");
         setLoading(false);
         return;
@@ -181,17 +181,17 @@ const MintPage = () => {
         address: USDCAddress as `0x${string}`,
         abi: USDCJson.abi,
         functionName: "approve",
-        args: [cusdAddress as `0x${string}`, USDCAmount],
+        args: [wUSDCAddress as `0x${string}`, USDCAmount],
         account: address,
       });
 
       const approveHash = await walletClient.writeContract(approveRequest);
       await publicClient.waitForTransactionReceipt({ hash: approveHash });
 
-      // Now call depositAndMint on CUSD contract
+      // Now call depositAndMint on wUSDC contract
       const { request: mintRequest } = await publicClient.simulateContract({
-        address: cusdAddress as `0x${string}`,
-        abi: CUSDJson.abi,
+        address: wUSDCAddress as `0x${string}`,
+        abi: wUSDCJson.abi,
         functionName: "depositAndMint",
         args: [USDCAmount],
         account: address,
@@ -203,13 +203,13 @@ const MintPage = () => {
       // Update balances and reset form
       fetchBalances();
       setAmount("");
-      setSuccess(`Successfully minted CUSD!`);
+      setSuccess(`Successfully minted wUSDC!`);
     } catch (err: unknown) {
-      console.error("Error minting CUSD:", err);
+      console.error("Error minting wUSDC:", err);
       const errorMessage =
         err instanceof Error
           ? err.message
-          : "Failed to mint CUSD. Please try again.";
+          : "Failed to mint wUSDC. Please try again.";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -254,7 +254,7 @@ const MintPage = () => {
           </div>
         ) : (
           <>
-            {/* USDC Mint Button - Above CUSD Box */}
+            {/* USDC Mint Button - Above wUSDC Box */}
             <div className="max-w-2xl mx-auto mb-6">
               <div className="bg-black border border-gray-800 p-4 rounded-lg shadow-lg backdrop-blur-sm bg-[radial-gradient(#333_1px,transparent_1px)] bg-[size:10px_10px]">
                 <div className="flex items-center justify-between">
@@ -266,7 +266,7 @@ const MintPage = () => {
                       </span>
                     </p>
                     <p className="text-sm text-gray-400">
-                      Need USDC to mint CUSD? Get 10 USDC for testing
+                      Need USDC to mint wUSDC? Get 10 USDC for testing
                     </p>
                   </div>
 
@@ -290,11 +290,11 @@ const MintPage = () => {
               </div>
             </div>
 
-            {/* CUSD Mint Box */}
+            {/* wUSDC Mint Box */}
             <div className="max-w-2xl mx-auto">
               <div className="bg-black border border-gray-800 p-6 rounded-lg shadow-lg mb-6 backdrop-blur-sm bg-[radial-gradient(#333_1px,transparent_1px)] bg-[size:10px_10px]">
                 <h2 className="text-2xl font-bold mb-4 text-[#FF8C00] font-mono">
-                  MINT CUSD
+                  MINT wUSDC
                 </h2>
 
                 <div className="mb-4">
@@ -305,9 +305,9 @@ const MintPage = () => {
                     </span>
                   </p>
                   <p className="text-gray-300 mb-4">
-                    Your CUSD Balance:{" "}
+                    Your wUSDC Balance:{" "}
                     <span className="text-[#FF8C00] font-bold">
-                      {CUSDBalance} CUSD
+                      {wUSDCBalance} wUSDC
                     </span>
                   </p>
                 </div>
@@ -348,7 +348,7 @@ const MintPage = () => {
                         className="w-full px-3 py-2 bg-gray-800 bg-opacity-50 border border-gray-700 text-white rounded-md"
                       />
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <span className="text-gray-400">CUSD</span>
+                        <span className="text-gray-400">wUSDC</span>
                       </div>
                     </div>
                   </div>
@@ -360,7 +360,7 @@ const MintPage = () => {
                   className={`w-full py-3 px-4 rounded-md text-white font-medium transition-colors ${loading ? "opacity-70" : ""
                     } bg-black border border-[#FF8C00] shadow-[0_0_15px_rgba(255,140,0,0.7)] hover:shadow-[0_0_20px_rgba(255,140,0,1)] hover:text-[#FF8C00]`}
                 >
-                  {loading ? "Processing..." : "Mint CUSD"}
+                  {loading ? "Processing..." : "Mint wUSDC"}
                 </button>
 
                 {error && (
@@ -374,13 +374,13 @@ const MintPage = () => {
 
               <div className="bg-black border border-gray-800 p-4 rounded-lg backdrop-blur-sm bg-[radial-gradient(#333_1px,transparent_1px)] bg-[size:10px_10px]">
                 <h2 className="text-lg font-semibold mb-2 text-[#FF8C00]">
-                  About CUSD
+                  About wUSDC
                 </h2>
                 <p className="text-gray-300 mb-2">
-                  CUSD is a yield-bearing stablecoin backed by USDC collateral.
+                  wUSDC is a yield-bearing stablecoin backed by USDC collateral.
                 </p>
                 <p className="text-gray-300">
-                  When you mint CUSD, your USDC is deposited into the protocol and
+                  When you mint wUSDC, your USDC is deposited into the protocol and
                   used to generate yield through secure lending markets.
                 </p>
               </div>

@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "stCORE",
-  "sourceName": "contracts/stCORE.sol",
+  "contractName": "stTOKEN",
+  "sourceName": "contracts/stTOKEN.sol",
   "abi": [
     {
       "inputs": [
@@ -322,17 +322,17 @@
           "type": "uint256"
         }
       ],
-      "name": "convertToUSDCAndSendToCUSD",
+      "name": "convertToUSDCAndSendTowUSDC",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
       "inputs": [],
-      "name": "cusdToken",
+      "name": "wUSDCToken",
       "outputs": [
         {
-          "internalType": "contract CUSD",
+          "internalType": "contract wUSDC",
           "name": "",
           "type": "address"
         }
@@ -416,11 +416,11 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_CUSDAddress",
+          "name": "_wUSDCAddress",
           "type": "address"
         }
       ],
-      "name": "setCUSDAddress",
+      "name": "setwUSDCAddress",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

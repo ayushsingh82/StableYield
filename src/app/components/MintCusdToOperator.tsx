@@ -3,15 +3,15 @@
 import { useState } from "react";
 import { usePublicClient, useWalletClient, useAccount, useChainId } from "wagmi";
 import { parseUnits } from "viem";
-import CUSDJson from "../../contracts/CUSD.sol/CUSD.json";
+import wUSDCJson from "../../contracts/wUSDC.sol/wUSDC.json";
 import { getContractAddress } from "../../config";
 
-interface MintCusdToOperatorProps {
+interface MintwUSDCToOperatorProps {
     onMintSuccess?: () => void;
     onMintError?: (error: string) => void;
 }
 
-export default function MintCusdToOperator({ onMintSuccess, onMintError }: MintCusdToOperatorProps) {
+export default function MintwUSDCToOperator({ onMintSuccess, onMintError }: MintwUSDCToOperatorProps) {
     const [loading, setLoading] = useState(false);
     const [notification, setNotification] = useState({
         show: false,
@@ -29,7 +29,7 @@ export default function MintCusdToOperator({ onMintSuccess, onMintError }: MintC
         setTimeout(() => setNotification({ show: false, message: "", type: "success" }), 5000);
     };
 
-    // Handle minting cUSD to operator
+    // Handle minting wUSDC to operator
     const handleMintToOperator = async () => {
         if (!walletClient || !publicClient) {
             const errorMsg = "Wallet not connected properly";
@@ -40,29 +40,29 @@ export default function MintCusdToOperator({ onMintSuccess, onMintError }: MintC
 
         setLoading(true);
         try {
-            const cusdAddress = getContractAddress("CUSD", chainId);
+            const wUSDCAddress = getContractAddress("wUSDC", chainId);
 
-            if (cusdAddress === '0x0000000000000000000000000000000000000000') {
-                const errorMsg = "CUSD contract not available on current network";
+            if (wUSDCAddress === '0x0000000000000000000000000000000000000000') {
+                const errorMsg = "wUSDC contract not available on current network";
                 showNotification(errorMsg, "error");
                 onMintError?.(errorMsg);
                 setLoading(false);
                 return;
             }
 
-            // Mint 10 CUSD to operator
+            // Mint 10 wUSDC to operator
             const { request } = await publicClient.simulateContract({
-                address: cusdAddress as `0x${string}`,
-                abi: CUSDJson.abi,
+                address: wUSDCAddress as `0x${string}`,
+                abi: wUSDCJson.abi,
                 functionName: "mintToOperator",
-                args: [parseUnits("10", 18)], // Mint 10 CUSD to operator
+                args: [parseUnits("10", 18)], // Mint 10 wUSDC to operator
                 account: address,
             });
 
             const hash = await walletClient.writeContract(request);
             await publicClient.waitForTransactionReceipt({ hash });
 
-            const successMsg = "Successfully minted 10 CUSD to operator";
+            const successMsg = "Successfully minted 10 wUSDC to operator";
             showNotification(successMsg, "success");
             onMintSuccess?.();
         } catch (error: unknown) {
@@ -78,9 +78,9 @@ export default function MintCusdToOperator({ onMintSuccess, onMintError }: MintC
     return (
         <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
             <div className="text-center mb-6">
-                <h3 className="text-xl font-bold text-white mb-2">Mint cUSD to Operator</h3>
+                <h3 className="text-xl font-bold text-white mb-2">Mint wUSDC to Operator</h3>
                 <p className="text-gray-400 text-sm">
-                    Mint 10 cUSD tokens directly to the operator address
+                    Mint 10 wUSDC tokens directly to the operator address
                 </p>
             </div>
 
@@ -121,7 +121,7 @@ export default function MintCusdToOperator({ onMintSuccess, onMintError }: MintC
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                             />
                         </svg>
-                        <span>Mint 10 cUSD to Operator</span>
+                        <span>Mint 10 wUSDC to Operator</span>
                     </>
                 )}
             </button>
