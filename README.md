@@ -20,7 +20,7 @@ StableYield is a credibly secure and fully collateralized stablecoin designed to
 | **Fully Collateralized** | Every StableYield token is backed 1:1 by on-chain reserve assets, including on-chain USDC/USDT and other battle-tested collateral. |
 | **Yield-Optional**  | Users may opt into yield-bearing strategies backed by performance-guaranteed agents, without impacting the peg or solvency of the base stablecoin. |
 | **Trust-Minimized Guarantees** | A slashing-based model ensures that operational failures are absorbed by collateral providers, not end-users. This eliminates governance subjectivity and ensures objective enforcement. |
-| **Composable & Modular** | Designed to integrate seamlessly with Core DeFi: AMMs, lending markets, derivatives, and staking ecosystems. |
+| **Composable & Modular** | Designed to integrate seamlessly with on-chain DeFi: AMMs, lending markets, derivatives, and staking ecosystems. |
 
 ---
 
@@ -29,7 +29,7 @@ StableYield is a credibly secure and fully collateralized stablecoin designed to
 #### 3.1 Base Stablecoin Layer
 - **Minting:** Users deposit reserve assets (e.g., USDC, USDT) into the StableYield vault contract to mint StableYield tokens 1:1.
 - **Redemption:** At any time, users may burn StableYield to retrieve the equivalent amount of reserve tokens.
-- **Reserves:** All reserves are held transparently in Core-native contracts—auditable, non-custodial, and overcollateralized if needed.
+- **Reserves:** All reserves are held transparently in smart contracts—auditable, non-custodial, and overcollateralized if needed.
 
 #### 3.2 Optional Yield Layer
 - Users may stake StableYield into structured yield vaults, operated by agents who deploy capital into whitelisted strategies (e.g., MEV capture, LST arbitrage, RWA yield).
@@ -45,7 +45,7 @@ StableYield is a credibly secure and fully collateralized stablecoin designed to
 
 ### 4. Governance & Evolution
 
-- **Phase 1:** Launch with controlled governance via multisig of CoreDAO-aligned members.
+- **Phase 1:** Launch with controlled governance via multisig of aligned stakeholders.
 - **Phase 2:** Transition to on-chain, community-driven DAO governance.
 
 **Governance Powers:**
@@ -58,9 +58,9 @@ StableYield is a credibly secure and fully collateralized stablecoin designed to
 
 ### 5. Ecosystem Integration
 
-- **Stable Asset for Core DeFi:** StableYield will power Core-native liquidity pools, lending protocols, derivatives, and payment rails.
+- **Stable Asset for DeFi:** StableYield will power on-chain liquidity pools, lending protocols, derivatives, and payment rails.
 - **Yield Primitive:** Yield-bearing versions of StableYield can serve as collateral, funding instruments, or revenue-bearing assets.
-- **Composable Guarantees:** Restakers and operators can be modular components plugged into existing Core protocol infrastructure.
+- **Composable Guarantees:** Restakers and operators can be modular components plugged into existing protocol infrastructure.
 
 ---
 
@@ -68,10 +68,10 @@ StableYield is a credibly secure and fully collateralized stablecoin designed to
 
 | Phase      | Objectives                                                                                       |
 |------------|--------------------------------------------------------------------------------------------------|
-| **Q3 2025** | Launch MVP of StableYield with stable reserve backing (USDC/USDT). Deploy base mint/redeem contracts on Core Mainnet. |
+| **Q3 2025** | Launch MVP of StableYield with stable reserve backing (USDC/USDT). Deploy base mint/redeem contracts on mainnet. |
 | **Q4 2025** | Integrate additional collateral classes. Launch slashing mechanism and yield-optional vaults. Begin restaker onboarding. |
 | **Q1 2026** | Enable DAO governance. Open up new operator classes and deploy composable yield infrastructure. |
-| **Q2 2026+** | Expand cross-chain access, deploy HTLC-based atomic swaps, and integrate further Core-native financial protocols. |
+| **Q2 2026+** | Expand cross-chain access, deploy HTLC-based atomic swaps, and integrate further on-chain financial protocols. |
 
 ---
 
@@ -95,8 +95,8 @@ The project currently targets a local Hardhat network for development. The defau
 
 ### 8. Strategic Value
 
-- **Network-Optimized:** StableYield is purpose-built for Core’s architecture, enabling fast, low-cost transactions and seamless DeFi composability.
-- **Security Inheritance from Bitcoin:** As a Core-native application, StableYield benefits from Core’s Satoshi Plus consensus and indirect Bitcoin security.
+- **Network-Optimized:** StableYield is purpose-built for modern blockchain infrastructure, enabling fast, low-cost transactions and seamless DeFi composability.
+- **Security Inheritance:** StableYield benefits from robust consensus guarantees through the underlying blockchain it operates on.
 - **Decentralized Risk Management:** Users are never exposed to the performance risk of operators. Restakers serve as decentralized insurers, creating a robust financial firewall.
 - **Economic Multiplicity:** By splitting stablecoin utility and yield into separate layers, StableYield supports diverse user profiles—risk-averse holders and yield-seeking stakers alike.
 
@@ -104,4 +104,4 @@ The project currently targets a local Hardhat network for development. The defau
 
 ## 🔄 Future Vision
 
-Over time, StableYield will evolve into a full-scale operator and financial coordination layer, integrating Core-native protocols, liquid staking tokens (LSTs), and decentralized strategy networks into a single, composable stablecoin engine.
+Over time, StableYield will evolve into a full-scale operator and financial coordination layer, integrating native protocols, liquid staking tokens (LSTs), and decentralized strategy networks into a single, composable stablecoin engine.

@@ -485,7 +485,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Why Choose COREDOTMONEY Section */}
+   
       <div className="container mx-auto px-4 py-20 border-t border-gray-800">
         <div className="text-left mb-16">
           <h2
@@ -497,7 +497,7 @@ const HomePage = () => {
               fontFamily: "monospace",
             }}
           >
-            WHY CHOOSE StableYieldCORE
+            WHY CHOOSE StableYield
           </h2>
           <p className="text-lg text-gray-300 max-w-2xl">
             Earn yield safely while maintaining access to your funds.
@@ -564,52 +564,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-20 border-t border-gray-800">
-        <h2
-          className="text-4xl font-bold mb-8 font-mono text-center"
-          style={{
-            letterSpacing: "0.05em",
-            textShadow:
-              "0.05em 0 0 rgba(255,140,0,0.75), -0.025em -0.05em 0 rgba(255,127,80,0.75), 0.025em 0.05em 0 rgba(255,99,71,0.75)",
-            fontFamily: "monospace",
-          }}
-        >
-          StableYield TESTNET DEPLOYMENT ADDRESSES
-        </h2>
-        <div
-          className="max-w-4xl mx-auto bg-black p-8 rounded-lg border border-gray-800"
-          style={{
-            backgroundImage:
-              "radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px)",
-            backgroundSize: "10px 10px",
-          }}
-        >
-          <table className="w-full border-collapse">
-            <thead>
-              <tr>
-                <th className="border border-gray-800 p-4 text-left text-[#FF8C00]">
-                  Token
-                </th>
-                <th className="border border-gray-800 p-4 text-left text-[#FF8C00]">
-                  Address
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(devnetAddresses).map(([token, address]) => (
-                <tr key={token} className="hover:bg-gray-900 transition-colors">
-                  <td className="border border-gray-800 p-4 text-gray-300">
-                    {token}
-                  </td>
-                  <td className="border border-gray-800 p-4 text-gray-300 font-mono">
-                    {address}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
       <footer
         className="mt-20 bg-black"
         style={{

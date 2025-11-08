@@ -18,31 +18,8 @@ const hardhatConfig = {
 };
 
 export const supportedChains = {
-  // coreTestnet2: {
-  //   id: 1114,
-  //   name: 'Core Testnet2',
-  //   network: 'core-testnet2',
-  //   nativeCurrency: {
-  //     name: 'Core',
-  //     symbol: 'CORE',
-  //     decimals: 18,
-  //   },
-  //   rpcUrls: {
-  //     default: {
-  //       http: ['https://rpc.test2.btcs.network'],
-  //     },
-  //     public: {
-  //       http: ['https://rpc.test2.btcs.network'],
-  //     },
-  //   },
-  //   blockExplorers: {
-  //     default: {
-  //       name: 'CoreScan',
-  //       url: 'https://scan.test2.btcs.network',
-  //     },
-  //   },
-  //   testnet: true,
-  // },
+
+
   hardhat: hardhatConfig,
 };
 
@@ -90,10 +67,7 @@ export const getContractAddress = (
   contractName: keyof BaseAddresses,
   chainId: number
 ): string => {
-  // Core Testnet2
-  // if (chainId === supportedChains.coreTestnet2.id) {
-  //   return contractAddresses.coreTestnet2[contractName];
-  // }
+
 
   // Hardhat
   if (chainId === supportedChains.hardhat.id) {
@@ -113,49 +87,6 @@ export const ABIs = {
   ],
 };
 
-// RPC URLs
-// export const getRpcUrl = (chainId: number): string => {
-//   if (chainId === supportedChains.coreTestnet2.id) {
-//     return supportedChains.coreTestnet2.rpcUrls.default.http[0];
-//   }
-
-//   if (chainId === supportedChains.hardhat.id) {
-//     return supportedChains.hardhat.rpcUrls.default.http[0];
-//   }
-
-//   // Default to Core Testnet2
-//   return supportedChains.coreTestnet2.rpcUrls.default.http[0];
-// };
-
-// Explorer URLs
-// export const getExplorerUrl = (chainId: number): string => {
-//   if (chainId === supportedChains.coreTestnet2.id) {
-//     return supportedChains.coreTestnet2.blockExplorers.default.url;
-//   }
-
-//   if (chainId === supportedChains.hardhat.id) {
-//     return '';
-//   }
-
-//   // Default to Core Testnet2
-//   return supportedChains.coreTestnet2.blockExplorers.default.url;
-// };
-
-// Helper to format transaction URL
-// export const getTransactionUrl = (chainId: number, txHash: string): string => {
-//   const explorerUrl = getExplorerUrl(chainId);
-//   if (!explorerUrl) return '';
-//   return `${explorerUrl}/tx/${txHash}`;
-// };
-
-// Helper to format address URL
-// export const getAddressUrl = (chainId: number, address: string): string => {
-//   const explorerUrl = getExplorerUrl(chainId);
-//   if (!explorerUrl) return '';
-//   return `${explorerUrl}/address/${address}`;
-// };
-
-// Add more configuration options as needed
 
 // Add to wagmi config - only Hardhat
 export const chains = [supportedChains.hardhat] as const;
