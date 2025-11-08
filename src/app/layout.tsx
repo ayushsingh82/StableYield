@@ -11,7 +11,8 @@ import {
   getDefaultConfig,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
-import { WagmiProvider } from 'wagmi';
+import { WagmiProvider, createConfig, http } from 'wagmi';
+import { injected } from 'wagmi/connectors';
 import {
   QueryClientProvider,
   QueryClient,
@@ -20,13 +21,38 @@ import {
 const inter = Inter({ subsets: ['latin'] });
 
 // Configure RainbowKit with our custom chains
-const config = getDefaultConfig({
-  appName: 'StableYield',
-  projectId: 'YOUR_PROJECT_ID',
-  chains: chains,
-  ssr: true,
-  pollingInterval: rpcConfig.pollingInterval,
-});
+const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
+
+const transports = Object.fromEntries(
+  chains.map((chain) => [chain.id, http(chain.rpcUrls.default.http[0])])
+) as Record<number, ReturnType<typeof http>>;
+
+if (!projectId) {
+  console.warn('NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not set. Falling back to injected connector only.');
+}
+
+const config = projectId
+  ? getDefaultConfig({
+      appName: 'StableYield',
+      projectId,
+      chains,
+      ssr: false,
+      pollingInterval: rpcConfig.pollingInterval,
+      autoConnect: true,
+    })
+  : createConfig({
+      appName: 'StableYield',
+      chains,
+      ssr: false,
+      pollingInterval: rpcConfig.pollingInterval,
+      autoConnect: true,
+      connectors: [
+        injected({
+          shimDisconnect: true,
+        }),
+      ],
+      transports,
+    });
 
 // Create a client
 const queryClient = new QueryClient();

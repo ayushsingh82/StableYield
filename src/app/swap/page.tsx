@@ -205,11 +205,14 @@ const SwapPage = () => {
           functionName: "balanceOf",
           args: [address],
         });
-        if (wUSDCBalanceData && typeof wUSDCBalanceData === 'bigint') {
+        if (typeof wUSDCBalanceData === 'bigint') {
           const wUSDCDecimals = await getTokenDecimals(wUSDCAddress);
           const formattedBalance = formatUnits(wUSDCBalanceData, wUSDCDecimals);
           console.log(`Debug: wUSDC Balance - Raw: ${wUSDCBalanceData.toString()}, Decimals: ${wUSDCDecimals}, Formatted: ${formattedBalance}`);
           setwUSDCBalance(formattedBalance);
+        } else {
+          console.error("Debug: wUSDC Balance data is invalid:", wUSDCBalanceData);
+          setwUSDCBalance("0");
         }
       }
 
@@ -221,7 +224,7 @@ const SwapPage = () => {
           functionName: "balanceOf",
           args: [address],
         });
-        if (stwUSDCBalanceData && typeof stwUSDCBalanceData === 'bigint') {
+        if (typeof stwUSDCBalanceData === 'bigint') {
           const stwUSDCDecimals = await getTokenDecimals(stUSDCAddress);
           const formattedBalance = formatUnits(stwUSDCBalanceData, stwUSDCDecimals);
           console.log(`Debug: stwUSDC Balance - Raw: ${stwUSDCBalanceData.toString()}, Decimals: ${stwUSDCDecimals}, Formatted: ${formattedBalance}`);
