@@ -414,7 +414,7 @@ const HomePage = () => {
           }}
         >
           <Image
-            src="/flow.png"
+            src="/stableyield.png"
             alt="Protocol Flow Diagram"
             width={1200}
             height={600}

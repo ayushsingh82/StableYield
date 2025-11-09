@@ -38,14 +38,11 @@ const config = projectId
       chains,
       ssr: false,
       pollingInterval: rpcConfig.pollingInterval,
-      autoConnect: true,
     })
   : createConfig({
-      appName: 'StableYield',
       chains,
       ssr: false,
       pollingInterval: rpcConfig.pollingInterval,
-      autoConnect: true,
       connectors: [
         injected({
           shimDisconnect: true,
