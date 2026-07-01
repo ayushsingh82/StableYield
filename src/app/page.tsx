@@ -374,11 +374,11 @@ const HomePage = () => {
       </div>
 
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-20">
+      <div className="container mx-auto px-4 py-12 md:py-20">
         <div className="flex flex-col md:flex-row items-center justify-between">
-          <div className="md:w-1/2 mb-10 md:mb-0">
+          <div className="md:w-1/2 mb-10 md:mb-0 text-center md:text-left">
             <h1
-              className="text-6xl font-bold mb-4 font-mono"
+              className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 font-mono break-words"
               style={{
                 letterSpacing: "0.05em",
                 textShadow:
@@ -388,7 +388,7 @@ const HomePage = () => {
             >
               VERIFIABLE MONEY
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-gray-300">
+            <p className="text-lg sm:text-xl md:text-2xl mb-8 text-gray-300">
               Stablecoin protocol with credible financial guarantees
             </p>
             <button
@@ -399,14 +399,14 @@ const HomePage = () => {
             </button>
           </div>
 
-          <div className="md:w-1/2 h-[500px]">
+          <div className="w-full md:w-1/2 h-[300px] sm:h-[400px] md:h-[500px]">
             <StablecoinAnimation />
           </div>
         </div>
 
         {/* Flow Diagram - Full Width */}
         <div
-          className="w-full mt-20 bg-black/90 backdrop-blur-md p-8 rounded-lg border border-gray-700"
+          className="w-full mt-12 md:mt-20 bg-black/90 backdrop-blur-md p-4 sm:p-8 rounded-lg border border-gray-700"
           style={{
             backgroundImage:
               "radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px)",
@@ -429,7 +429,7 @@ const HomePage = () => {
           />
 
           {/* Diagram Explanation */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-6">
               <h3 className="text-2xl font-bold text-[#FF8C00]">
                 Collateral Flow
@@ -486,10 +486,10 @@ const HomePage = () => {
       </div>
 
    
-      <div className="container mx-auto px-4 py-20 border-t border-gray-800">
-        <div className="text-left mb-16">
+      <div className="container mx-auto px-4 py-12 md:py-20 border-t border-gray-800">
+        <div className="text-left mb-10 md:mb-16">
           <h2
-            className="text-4xl font-bold mb-4 font-mono"
+            className="text-3xl sm:text-4xl font-bold mb-4 font-mono break-words"
             style={{
               letterSpacing: "0.05em",
               textShadow:
